@@ -1,9 +1,20 @@
 from aiogram import types
 from dispatcher import dp
 
+from actions.auth import RollIn
+from actions.basic import CheckProto
 
-# Personal actions goes here (bot direct messages)
-# Here is some example !ping command ...
-@dp.message_handler(is_owner=True, commands="ping", commands_prefix="!/")
+
+@dp.message_handler(commands="start")
+async def cmd_start(message: types.Message):
+    return RollIn(message).process()
+
+
+@dp.message_handler(is_owner=True, commands="check-proto")
 async def cmd_ping_bot(message: types.Message):
-    await message.reply("<b>👊 Up & Running!</b>\n\n")
+    return CheckProto(message).process()
+
+
+@dp.message_handler(is_owner=True, commands="ping")
+async def cmd_ping_bot(message: types.Message):
+    await message.reply("👊 Up & Running!")

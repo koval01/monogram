@@ -1,0 +1,22 @@
+{
+    "start": {
+        "uk": "Відскануйте QR-код або скористайтеся посиланням для авторизації",
+        "en": "Scan the QR code or use the link for authorization"
+    },
+    "link_button": {
+        "uk": "Увійти за посиланням",
+        "en": "Login by link"
+    },
+    "exception": {
+        "uk": "Під час обробки вашого запиту виникла помилка. Клас помилки: <code>%s</code>",
+        "en": "An error occurred while processing your request. Error class: <code>%s</code>"
+    },
+    "roll_error": {
+        "uk": "Не вдалося отримати дані для ініціалізації сесії",
+        "en": "Failed to receive data for session initialization"
+    },
+    "check_token_button": {
+        "uk": "Перевірити авторизацію",
+        "en": "Check auth"
+    }
+}

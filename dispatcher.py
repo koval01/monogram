@@ -1,6 +1,6 @@
 import logging
 from aiogram import Bot, Dispatcher
-from filters import IsOwnerFilter, IsAdminFilter, MemberCanRestrictFilter
+from filters import IsOwnerFilter
 import config
 
 # Configure logging
@@ -16,5 +16,3 @@ dp = Dispatcher(bot)
 
 # activate filters
 dp.filters_factory.bind(IsOwnerFilter)
-dp.filters_factory.bind(IsAdminFilter)
-dp.filters_factory.bind(MemberCanRestrictFilter)

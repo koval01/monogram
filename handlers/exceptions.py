@@ -4,18 +4,23 @@ from aiogram.utils.exceptions import (Unauthorized, InvalidQueryID, TelegramAPIE
                                       MessageTextIsEmpty, RetryAfter,
                                       CantParseEntities, MessageCantBeDeleted)
 
-from dispatcher import dp
+from dispatcher import dp, bot
+from misc.lang import Lang
 
 
 @dp.errors_handler()
 async def errors_handler(update, exception):
     """
     Exceptions handler. Catches all exceptions within task factory tasks.
-    :param dispatcher:
     :param update:
     :param exception:
     :return: stdout logging
     """
+
+    await bot.send_message(
+        update.message.from_user.id,
+        Lang.get("exception", update.message) % exception.__class__.__name__
+    )
 
     if isinstance(exception, CantDemoteChatCreator):
         logging.debug("Can't demote chat creator")
