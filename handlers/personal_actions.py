@@ -7,12 +7,12 @@ from actions.basic import CheckProto
 
 @dp.message_handler(commands="start")
 async def cmd_start(message: types.Message):
-    return RollIn(message).process()
+    return await RollIn(message).process()
 
 
 @dp.message_handler(is_owner=True, commands="check-proto")
 async def cmd_ping_bot(message: types.Message):
-    return CheckProto(message).process()
+    return await CheckProto(message).process()
 
 
 @dp.message_handler(is_owner=True, commands="ping")
