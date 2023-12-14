@@ -13,11 +13,11 @@ class Lang:
     def load(self) -> None:
         Lang.dictionary = json.loads(open(self.file, "r").read())
         logging.info("Language data loaded")
-        
+
     @classmethod
-    def get(cls, key: str, message: types.Message) -> str:
+    def get(cls, key: str, message: types.Message or any, code: str = None) -> str:
         try:
-            return cls.dictionary[key][message.from_user.language_code]
-        except KeyError:
+            return cls.dictionary[key][code if code else message.from_user.language_code]
+        except (KeyError, AttributeError):
             return cls.dictionary[key][cls.default_lang]
         

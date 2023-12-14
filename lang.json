@@ -18,5 +18,17 @@
     "check_token_button": {
         "uk": "Перевірити авторизацію",
         "en": "Check auth"
+    },
+    "update_mono_token_error": {
+        "uk": "Не вдалося оновити токен авторизації в нашому сховищі. Схоже в нас виникли проблеми з Redis. Спробуйте ще раз трохи пізніше",
+        "en": "Could not update the authorization token in our storage. We seem to have some issues with Redis. Please try again later"
+    },
+    "mono_token_active": {
+        "uk": "Привіт %s, вітаємо з успішною авторизацією",
+        "en": "Hello %s, congratulations on your successful authorization"
+    },
+    "ok": {
+        "uk": "Гаразд, все добре!",
+        "en": "Okay, everything is fine!"
     }
 }

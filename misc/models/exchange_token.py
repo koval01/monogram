@@ -4,5 +4,5 @@ from pydantic import BaseModel
 
 
 class Model(BaseModel):
-    token: bool = False
+    token: bool | str = None
     error: str = None
