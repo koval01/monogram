@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "python",
+            "name": "Run bot",
+            "file": "bot.py",
+            "arguments": [],
+        },
+        
+    ]
+}
