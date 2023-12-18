@@ -1,34 +1,55 @@
 {
-    "start": {
-        "uk": "Відскануйте QR-код або скористайтеся посиланням для авторизації",
-        "en": "Scan the QR code or use the link for authorization"
+    "keys": {
+        "start": {
+            "uk": "Відскануйте QR-код або скористайтеся посиланням для авторизації",
+            "en": "Scan the QR code or use the link for authorization"
+        },
+        "link_button": {
+            "uk": "Увійти за посиланням",
+            "en": "Login by link"
+        },
+        "exception": {
+            "uk": "Під час обробки вашого запиту виникла помилка. Клас помилки: <code>%s</code>",
+            "en": "An error occurred while processing your request. Error class: <code>%s</code>"
+        },
+        "roll_error": {
+            "uk": "Не вдалося отримати дані для ініціалізації сесії",
+            "en": "Failed to receive data for session initialization"
+        },
+        "check_token_button": {
+            "uk": "Перевірити авторизацію",
+            "en": "Check auth"
+        },
+        "update_mono_token_error": {
+            "uk": "Не вдалося оновити токен авторизації в нашому сховищі. Схоже в нас виникли проблеми з Redis. Спробуйте ще раз трохи пізніше",
+            "en": "Could not update the authorization token in our storage. We seem to have some issues with Redis. Please try again later"
+        },
+        "mono_token_active": {
+            "uk": "Привіт %s, вітаємо з успішною авторизацією",
+            "en": "Hello %s, congratulations on your successful authorization"
+        },
+        "ok": {
+            "uk": "Гаразд, все добре!",
+            "en": "Okay, everything is fine!"
+        },
+        "reauth": {
+            "uk": "Ви вже авторизовані. Бажаєте переавторизуватися?",
+            "en": "You are already authorized. Do you want to re-authorize?"
+        },
+        "yes": {
+            "uk": "Так",
+            "en": "Yes"
+        },
+        "no": {
+            "uk": "Ні",
+            "en": "No"
+        },
+        "default_language": {
+            "uk": "Оскільки ваша мова клієнту не підтримується цим ботом, то було встановлено стандартну - Англійську. Якщо ви встановите у своєму клієнті підтримувану мову, то вона одразу застосується в боті.",
+            "en": "Since your client language is not supported by this bot, the default language was set to English. If you install a supported language in your client, it will be applied immediately in the bot."
+        }
     },
-    "link_button": {
-        "uk": "Увійти за посиланням",
-        "en": "Login by link"
-    },
-    "exception": {
-        "uk": "Під час обробки вашого запиту виникла помилка. Клас помилки: <code>%s</code>",
-        "en": "An error occurred while processing your request. Error class: <code>%s</code>"
-    },
-    "roll_error": {
-        "uk": "Не вдалося отримати дані для ініціалізації сесії",
-        "en": "Failed to receive data for session initialization"
-    },
-    "check_token_button": {
-        "uk": "Перевірити авторизацію",
-        "en": "Check auth"
-    },
-    "update_mono_token_error": {
-        "uk": "Не вдалося оновити токен авторизації в нашому сховищі. Схоже в нас виникли проблеми з Redis. Спробуйте ще раз трохи пізніше",
-        "en": "Could not update the authorization token in our storage. We seem to have some issues with Redis. Please try again later"
-    },
-    "mono_token_active": {
-        "uk": "Привіт %s, вітаємо з успішною авторизацією",
-        "en": "Hello %s, congratulations on your successful authorization"
-    },
-    "ok": {
-        "uk": "Гаразд, все добре!",
-        "en": "Okay, everything is fine!"
-    }
+    "valid_lang_keys": [
+        "uk", "en"
+    ]
 }
