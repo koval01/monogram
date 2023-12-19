@@ -2,54 +2,78 @@
     "keys": {
         "start": {
             "uk": "Відскануйте QR-код або скористайтеся посиланням для авторизації",
-            "en": "Scan the QR code or use the link for authorization"
+            "en": "Scan the QR code or use the link for authorization",
+            "ru": "Отсканируйте QR-код или воспользуйтесь ссылкой для авторизации",
+            "be": "Адсканіруйце QR-код або скарыстайцеся спасылкай для аўтарызацыі"
         },
         "link_button": {
             "uk": "Увійти за посиланням",
-            "en": "Login by link"
+            "en": "Login by link",
+            "ru": "Войти по ссылке",
+            "be": "Увайдзіце па спасылцы"
         },
         "exception": {
             "uk": "Під час обробки вашого запиту виникла помилка. Клас помилки: <code>%s</code>",
-            "en": "An error occurred while processing your request. Error class: <code>%s</code>"
+            "en": "An error occurred while processing your request. Error class: <code>%s</code>",
+            "ru": "При обработке запроса возникла ошибка. Класс ошибки: <code>%s</code>",
+            "be": "Падчас апрацоўкі вашага запыту адбылася памылка. Клас памылкі: <code>%s</code>"
         },
         "roll_error": {
             "uk": "Не вдалося отримати дані для ініціалізації сесії",
-            "en": "Failed to receive data for session initialization"
+            "en": "Failed to receive data for session initialization",
+            "ru": "Не удалось получить данные для инициализации сессии",
+            "be": "Не ўдалося атрымаць даныя ініцыялізацыі сеанса"
         },
         "check_token_button": {
             "uk": "Перевірити авторизацію",
-            "en": "Check auth"
+            "en": "Check auth",
+            "ru": "Проверить авторизацию",
+            "be": "Праверце аўтарызацыю"
         },
         "update_mono_token_error": {
             "uk": "Не вдалося оновити токен авторизації в нашому сховищі. Схоже в нас виникли проблеми з Redis. Спробуйте ще раз трохи пізніше",
-            "en": "Could not update the authorization token in our storage. We seem to have some issues with Redis. Please try again later"
+            "en": "Could not update the authorization token in our storage. We seem to have some issues with Redis. Please try again later",
+            "ru": "Не удалось обновить токен авторизации в нашем хранилище. Похоже, у нас возникли проблемы с Redis. Попробуйте еще раз чуть позже",
+            "be": "Не ўдалося абнавіць маркер аўтарызацыі ў нашым рэпазітары. Здаецца, у нас праблемы з Redis. Калі ласка паспрабуйце зноў пазней"
         },
         "mono_token_active": {
             "uk": "Привіт %s, вітаємо з успішною авторизацією",
-            "en": "Hello %s, congratulations on your successful authorization"
+            "en": "Hello %s, congratulations on your successful authorization",
+            "ru": "Привет %s, поздравляем с успешной авторизацией",
+            "be": "Прывітанне, %s, віншуем з паспяховай аўтарызацыяй"
         },
         "ok": {
             "uk": "Гаразд, все добре!",
-            "en": "Okay, everything is fine!"
+            "en": "Okay, everything is fine!",
+            "ru": "Ладно, все хорошо!",
+            "be": "Добра, гэта добра!"
         },
         "reauth": {
             "uk": "Ви вже авторизовані. Бажаєте переавторизуватися?",
-            "en": "You are already authorized. Do you want to re-authorize?"
+            "en": "You are already authorized. Do you want to re-authorize?",
+            "ru": "Вы уже авторизованы. Хотите переавторизироваться?",
+            "be": "Вы ўжо аўтарызаваны. Вы жадаеце паўторна аўтарызавацца?"
         },
         "yes": {
             "uk": "Так",
-            "en": "Yes"
+            "en": "Yes",
+            "ru": "Да",
+            "be": "Так"
         },
         "no": {
             "uk": "Ні",
-            "en": "No"
+            "en": "No",
+            "ru": "Нет",
+            "be": "Не"
         },
         "default_language": {
             "uk": "Оскільки ваша мова клієнту не підтримується цим ботом, то було встановлено стандартну - Англійську. Якщо ви встановите у своєму клієнті підтримувану мову, то вона одразу застосується в боті.",
-            "en": "Since your client language is not supported by this bot, the default language was set to English. If you install a supported language in your client, it will be applied immediately in the bot."
+            "en": "Since your client language is not supported by this bot, the default language was set to English. If you install a supported language in your client, it will be applied immediately in the bot.",
+            "ru": "Поскольку ваш язык клиента не поддерживается этим ботом, то был установлен стандартный – английский. Если вы установите в своем клиенте поддерживаемый язык, то он сразу применится в боте.",
+            "be": "Паколькі мова вашага кліента не падтрымліваецца гэтым ботам, мовай па змаўчанні была ўстаноўлена англійская. Калі вы ўсталюеце мову, якая падтрымліваецца, у вашым кліенце, яна будзе неадкладна прыменена ў боте."
         }
     },
     "valid_lang_keys": [
-        "uk", "en"
+        "uk", "en", "ru", "be"
     ]
 }
