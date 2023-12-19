@@ -4,76 +4,124 @@
             "uk": "Відскануйте QR-код або скористайтеся посиланням для авторизації",
             "en": "Scan the QR code or use the link for authorization",
             "ru": "Отсканируйте QR-код или воспользуйтесь ссылкой для авторизации",
-            "be": "Адсканіруйце QR-код або скарыстайцеся спасылкай для аўтарызацыі"
+            "be": "Адсканіруйце QR-код або скарыстайцеся спасылкай для аўтарызацыі",
+            "pl": "Zeskanuj kod QR lub użyj linku w celu autoryzacji",
+            "de": "Scannen Sie den QR-Code oder nutzen Sie den Link zur Autorisierung",
+            "cs": "Naskenujte QR kód nebo použijte odkaz pro autorizaci",
+            "sk": "Naskenujte QR kód alebo použite odkaz na autorizáciu"
         },
         "link_button": {
             "uk": "Увійти за посиланням",
             "en": "Login by link",
             "ru": "Войти по ссылке",
-            "be": "Увайдзіце па спасылцы"
+            "be": "Увайдзіце па спасылцы",
+            "pl": "Zaloguj się korzystając z linku",
+            "de": "Melden Sie sich über den Link an",
+            "cs": "Přihlaste se pomocí odkazu",
+            "sk": "Prihláste sa odkazom"
         },
         "exception": {
             "uk": "Під час обробки вашого запиту виникла помилка. Клас помилки: <code>%s</code>",
             "en": "An error occurred while processing your request. Error class: <code>%s</code>",
             "ru": "При обработке запроса возникла ошибка. Класс ошибки: <code>%s</code>",
-            "be": "Падчас апрацоўкі вашага запыту адбылася памылка. Клас памылкі: <code>%s</code>"
+            "be": "Падчас апрацоўкі вашага запыту адбылася памылка. Клас памылкі: <code>%s</code>",
+            "pl": "Podczas przetwarzania żądania wystąpił błąd. Klasa błędu: <code>%s</code>",
+            "de": "Während Ihrer Anfrage ist ein Fehler aufgetreten. Fehlerklasse: <code>%s</code>",
+            "cs": "Při zpracování vašeho požadavku nastala chyba. Třída chyb: <code>%s</code>",
+            "sk": "Nastala chyba pri spracovaní vašej žiadosti. Trieda chýb: <code>%s</code>"
         },
         "roll_error": {
             "uk": "Не вдалося отримати дані для ініціалізації сесії",
             "en": "Failed to receive data for session initialization",
             "ru": "Не удалось получить данные для инициализации сессии",
-            "be": "Не ўдалося атрымаць даныя ініцыялізацыі сеанса"
+            "be": "Не ўдалося атрымаць даныя ініцыялізацыі сеанса",
+            "pl": "Nie udało się pobrać danych inicjujących sesję",
+            "de": "Es konnten keine Sitzungsinitialisierungsdaten abgerufen werden",
+            "cs": "Nepodařilo se přijmout data pro inicializaci relace",
+            "sk": "Nepodarilo sa prijať údaje na inicializáciu relácie"
         },
         "check_token_button": {
             "uk": "Перевірити авторизацію",
             "en": "Check auth",
             "ru": "Проверить авторизацию",
-            "be": "Праверце аўтарызацыю"
+            "be": "Праверце аўтарызацыю",
+            "pl": "Sprawdź autoryzację",
+            "de": "Berechtigung prüfen",
+            "cs": "Zkontrolujte autentizaci",
+            "sk": "Skontrolovať autentizáciu"
         },
         "update_mono_token_error": {
             "uk": "Не вдалося оновити токен авторизації в нашому сховищі. Схоже в нас виникли проблеми з Redis. Спробуйте ще раз трохи пізніше",
             "en": "Could not update the authorization token in our storage. We seem to have some issues with Redis. Please try again later",
             "ru": "Не удалось обновить токен авторизации в нашем хранилище. Похоже, у нас возникли проблемы с Redis. Попробуйте еще раз чуть позже",
-            "be": "Не ўдалося абнавіць маркер аўтарызацыі ў нашым рэпазітары. Здаецца, у нас праблемы з Redis. Калі ласка паспрабуйце зноў пазней"
+            "be": "Не ўдалося абнавіць маркер аўтарызацыі ў нашым рэпазітары. Здаецца, у нас праблемы з Redis. Калі ласка паспрабуйце зноў пазней",
+            "pl": "Nie udało się zaktualizować tokena autoryzacyjnego w naszym repozytorium. Wygląda na to, że mamy problemy z Redisem. Spróbuj ponownie później",
+            "de": "Das Autorisierungstoken in unserem Repository konnte nicht aktualisiert werden. Es sieht so aus, als hätten wir Probleme mit Redis. Bitte versuchen Sie es später noch einmal",
+            "cs": "Nepodařilo se aktualizovat autorizační token v našem úložišti. Zdá se, že máme nějaké problémy s Redisem. Prosím zkuste to znovu později",
+            "sk": "Nepodarilo sa aktualizovať autorizačný token v našom úložisku. Zdá sa, že máme nejaké problémy s Redisom. Skúste neskôr prosím"
         },
         "mono_token_active": {
             "uk": "Привіт %s, вітаємо з успішною авторизацією",
             "en": "Hello %s, congratulations on your successful authorization",
             "ru": "Привет %s, поздравляем с успешной авторизацией",
-            "be": "Прывітанне, %s, віншуем з паспяховай аўтарызацыяй"
+            "be": "Прывітанне, %s, віншуем з паспяховай аўтарызацыяй",
+            "pl": "Witaj %s, gratulujemy udanej autoryzacji",
+            "de": "Hallo %s, herzlichen Glückwunsch zur erfolgreichen Autorisierung",
+            "cs": "Dobrý den %s, blahopřejeme k úspěšné autorizaci",
+            "sk": "Dobrý deň %s, blahoželáme vám k úspešnej autorizácii"
         },
         "ok": {
             "uk": "Гаразд, все добре!",
             "en": "Okay, everything is fine!",
             "ru": "Ладно, все хорошо!",
-            "be": "Добра, гэта добра!"
+            "be": "Добра, гэта добра!",
+            "pl": "OK, jest dobrze!",
+            "de": "Okay, es ist gut!",
+            "cs": "Dobře, všechno je v pořádku!",
+            "sk": "Dobre, všetko je v poriadku!"
         },
         "reauth": {
             "uk": "Ви вже авторизовані. Бажаєте переавторизуватися?",
             "en": "You are already authorized. Do you want to re-authorize?",
             "ru": "Вы уже авторизованы. Хотите переавторизироваться?",
-            "be": "Вы ўжо аўтарызаваны. Вы жадаеце паўторна аўтарызавацца?"
+            "be": "Вы ўжо аўтарызаваны. Вы жадаеце паўторна аўтарызавацца?",
+            "pl": "Masz już autoryzację. Czy chcesz dokonać ponownej autoryzacji?",
+            "de": "Sie sind bereits autorisiert. Möchten Sie sich erneut autorisieren?",
+            "cs": "Již máte oprávnění. Chcete znovu autorizovat?",
+            "sk": "Už ste autorizovaný. Chcete znova autorizovať?"
         },
         "yes": {
             "uk": "Так",
             "en": "Yes",
             "ru": "Да",
-            "be": "Так"
+            "be": "Так",
+            "pl": "Tak",
+            "de": "Ja",
+            "cs": "Ano",
+            "sk": "Áno"
         },
         "no": {
             "uk": "Ні",
             "en": "No",
             "ru": "Нет",
-            "be": "Не"
+            "be": "Не",
+            "pl": "Nie",
+            "de": "Nein",
+            "cs": "Ne",
+            "sk": "Nie"
         },
         "default_language": {
             "uk": "Оскільки ваша мова клієнту не підтримується цим ботом, то було встановлено стандартну - Англійську. Якщо ви встановите у своєму клієнті підтримувану мову, то вона одразу застосується в боті.",
             "en": "Since your client language is not supported by this bot, the default language was set to English. If you install a supported language in your client, it will be applied immediately in the bot.",
             "ru": "Поскольку ваш язык клиента не поддерживается этим ботом, то был установлен стандартный – английский. Если вы установите в своем клиенте поддерживаемый язык, то он сразу применится в боте.",
-            "be": "Паколькі мова вашага кліента не падтрымліваецца гэтым ботам, мовай па змаўчанні была ўстаноўлена англійская. Калі вы ўсталюеце мову, якая падтрымліваецца, у вашым кліенце, яна будзе неадкладна прыменена ў боте."
+            "be": "Паколькі мова вашага кліента не падтрымліваецца гэтым ботам, мовай па змаўчанні была ўстаноўлена англійская. Калі вы ўсталюеце мову, якая падтрымліваецца, у вашым кліенце, яна будзе неадкладна прыменена ў боте.",
+            "pl": "Ponieważ ten bot nie obsługuje języka Twojego klienta, domyślnym językiem był angielski. Jeśli zainstalujesz obsługiwany język w swoim kliencie, zostanie on natychmiast zastosowany w bocie.",
+            "de": "Da Ihre Client-Sprache von diesem Bot nicht unterstützt wird, wurde die Standardsprache auf Englisch eingestellt. Wenn Sie eine unterstützte Sprache in Ihrem Client installieren, wird diese sofort im Bot angewendet.",
+            "cs": "Protože tento robot nepodporuje jazyk vašeho klienta, byl výchozí jazyk nastaven na angličtinu. Pokud do svého klienta nainstalujete podporovaný jazyk, bude okamžitě aplikován v robotu.",
+            "sk": "Keďže tento robot nepodporuje jazyk vášho klienta, predvolený jazyk bol nastavený na angličtinu. Ak do svojho klienta nainštalujete podporovaný jazyk, okamžite sa použije v robote."
         }
     },
     "valid_lang_keys": [
-        "uk", "en", "ru", "be"
+        "uk", "en", "ru", "be", "pl", "de", "cs", "sk"
     ]
 }
