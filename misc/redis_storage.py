@@ -21,3 +21,6 @@ class RedisStorage:
     
     async def set(self, key: str, value: str) -> bool:
         return await self.cursor.set(key, value)
+
+    async def forget(self, key: str) -> bool:
+        return await self.cursor.delete(key)

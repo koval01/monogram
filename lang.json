@@ -119,6 +119,56 @@
             "de": "Da Ihre Client-Sprache von diesem Bot nicht unterstützt wird, wurde die Standardsprache auf Englisch eingestellt. Wenn Sie eine unterstützte Sprache in Ihrem Client installieren, wird diese sofort im Bot angewendet.",
             "cs": "Protože tento robot nepodporuje jazyk vašeho klienta, byl výchozí jazyk nastaven na angličtinu. Pokud do svého klienta nainstalujete podporovaný jazyk, bude okamžitě aplikován v robotu.",
             "sk": "Keďže tento robot nepodporuje jazyk vášho klienta, predvolený jazyk bol nastavený na angličtinu. Ak do svojho klienta nainštalujete podporovaný jazyk, okamžite sa použije v robote."
+        },
+        "welcome_back": {
+            "uk": "З поверненням, %s!",
+            "en": "Welcome back, %s!",
+            "ru": "С возвращением %s!",
+            "be": "З вяртаннем, %s!",
+            "pl": "Witamy ponownie, %s!",
+            "de": "Willkommen zurück, %s!",
+            "cs": "Vítejte zpět, %s!",
+            "sk": "Vitajte späť, %s!"
+        },
+        "logout": {
+            "uk": "Ми завершили вашу сесію. Надіємося ви повернетеся.",
+            "en": "We have ended your session. We hope you will come back.",
+            "ru": "Мы завершили вашу сессию. Надеемся вы вернетесь.",
+            "be": "Мы скончылі вашу сесію. Мы спадзяемся, што вы вернецеся.",
+            "pl": "Zakończyliśmy Twoją sesję. Mamy nadzieję, że wrócisz.",
+            "de": "Wir haben Ihre Sitzung beendet. Wir hoffen, dass Sie wiederkommen.",
+            "cs": "Vaši relaci jsme ukončili. Doufáme, že se vrátíte.",
+            "sk": "Ukončili sme vašu reláciu. Dúfame, že sa vrátiš."
+        },
+        "logout_button": {
+            "uk": "Завершити сесію",
+            "en": "End session",
+            "ru": "Завершить сессию",
+            "be": "Скончыць сеанс",
+            "pl": "Zakończ sesję",
+            "de": "Sitzung beenden",
+            "cs": "Ukončete relaci",
+            "sk": "Ukončiť reláciu"
+        },
+        "unknown_error": {
+            "uk": "Під час опрацювання вашого запиту виникла помилка. Спробуйте ще раз або пізніше.",
+            "en": "An error occurred while processing your request. Try again or later.",
+            "ru": "При обработке запроса возникла ошибка. Попробуйте еще раз или позже.",
+            "be": "Падчас апрацоўкі вашага запыту адбылася памылка. Паспрабуйце яшчэ раз або пазней.",
+            "pl": "Podczas przetwarzania żądania wystąpił błąd. Spróbuj ponownie lub później.",
+            "de": "Während Ihrer Anfrage ist ein Fehler aufgetreten. Versuchen Sie es erneut oder später.",
+            "cs": "Při zpracování vašeho požadavku nastala chyba. Zkuste to znovu nebo později.",
+            "sk": "Nastala chyba pri spracovaní vašej žiadosti. Skúste to znova alebo neskôr."
+        },
+        "ratelimit": {
+            "uk": "Ви надсилаєте занадто багато запитів",
+            "en": "You are sending too many requests",
+            "ru": "Вы посылаете слишком много запросов",
+            "be": "Вы адпраўляеце занадта шмат запытаў",
+            "pl": "Wysyłasz zbyt wiele żądań",
+            "de": "Sie senden zu viele Anfragen",
+            "cs": "Posíláte příliš mnoho požadavků",
+            "sk": "Posielate príliš veľa žiadostí"
         }
     },
     "valid_lang_keys": [

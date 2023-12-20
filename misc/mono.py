@@ -1,7 +1,10 @@
 import asyncio
 import aiohttp
+from aiogram import types
 from aiohttp import ClientResponse
 from misc import models
+
+from misc.other import Other
 
 
 class MonoAPI:
@@ -70,6 +73,8 @@ class Mono:
         return models.roll_in.Model(**data)
 
     @staticmethod
-    async def client_info(token: str) -> models.client_info.Model:
+    async def client_info(message: types.Message, token: str) -> models.client_info.Model:
         data = await MonoAPI().client_info(token)
-        return models.client_info.Model(**data)
+        model = models.client_info.Model(**data)
+        model.name = Other.name_translate(message.from_user.language_code, model.name)
+        return model
