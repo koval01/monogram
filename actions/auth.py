@@ -100,7 +100,7 @@ class CheckToken:
             text=Lang.get("mono_token_active", message) % client.name.split()[-1]
         )
 
-        return await bot.answer_callback_query(
-            self.callback_query.id,
+        return await bot.send_message(
+            message.chat.id,
             text=Lang.get("ok", message)
         )
