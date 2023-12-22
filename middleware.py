@@ -114,5 +114,11 @@ class ThrottlingMiddleware(BaseMiddleware):
         - throttled (Throttled): Throttled instance containing rate limiting information.
         """
         
+        # Calculate how many time is left till the block ends
+        delta = throttled.rate - throttled.delta
+
         if throttled.exceeded_count <= 2:
             return await query.answer(Lang.get("ratelimit", query.message), show_alert=True)
+
+        # Sleep.
+        await asyncio.sleep(delta)
