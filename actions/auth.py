@@ -38,6 +38,15 @@ class RollIn:
         client = await Mono().client_info(self.message, token)
         return client
 
+    async def process_old(self, new_msg: types.Message) -> None:
+        key = f"start_qr_last_{self.message.chat.id}"
+        old_msg_id = await RedisStorage().get(key)
+
+        if isinstance(old_msg_id, str):
+            await bot.delete_message(self.message.chat.id, int(old_msg_id))
+
+        await RedisStorage().set(key, new_msg.message_id)
+
     async def process(self) -> types.Message:
         auth_client = await self.check_auth()
         if auth_client:
@@ -48,9 +57,13 @@ class RollIn:
         if not roll:
             return await self.message.reply(Lang.get("roll_error", self.message))
 
-        return await self.message.reply_photo(
+        msg = await self.message.reply_photo(
             base64.decodebytes(roll.qr), Lang.get("start", self.message),
             reply_markup=self.keyboard_create(roll))
+
+        await self.process_old(msg)
+
+        return msg
 
 
 class LogOut:
@@ -80,7 +93,7 @@ class CheckToken:
         if not token:
             return
 
-        client = await Mono().client_info(self.lang, token)
+        client = await Mono().client_info(self.callback_query.message, token)
 
         message = self.callback_query.message
 
@@ -100,7 +113,4 @@ class CheckToken:
             text=Lang.get("mono_token_active", message) % client.name.split()[-1]
         )
 
-        return await bot.send_message(
-            message.chat.id,
-            text=Lang.get("ok", message)
-        )
+        return await self.callback_query.answer(text=Lang.get("ok", message))
