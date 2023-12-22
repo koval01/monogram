@@ -23,7 +23,7 @@ async def errors_handler(update, exception):
 
     if not isinstance(exception, InvalidQueryID):
         await bot.send_message(
-            update.message.chat.id,
+            update.message.from_user.id,
             Lang.get("exception", update.message) % exception.__class__.__name__
         )
 
