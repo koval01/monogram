@@ -8,3 +8,4 @@ redis
 python-dotenv
 pydantic
 transliterate
+sentry-sdk

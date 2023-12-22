@@ -10,6 +10,7 @@ load_dotenv("dev.env")
 try:
     BOT_TOKEN = os.getenv('BOT_TOKEN')
     REDIS_URL = os.getenv("REDIS_URL")
+    SENTRY_DSN = os.getenv("SENTRY_DSN")
     BOT_OWNERS = [int(x) for x in os.getenv('BOT_OWNERS').split(",")]
     
 except (TypeError, ValueError) as ex:
