@@ -16,16 +16,11 @@ async def errors_handler(update, exception):
     :param exception:
     :return: stdout logging
     """
-    try:
-        update.message = update.callback_query
-    except NameError:
-        pass
 
-    if not isinstance(exception, InvalidQueryID):
-        await bot.send_message(
-            update.message.from_user.id,
-            Lang.get("exception", update.message) % exception.__class__.__name__
-        )
+    await bot.send_message(
+        update.message.chat.id,
+        Lang.get("exception", update.message) % exception.__class__.__name__
+    )
 
     if isinstance(exception, CantDemoteChatCreator):
         logging.debug("Can't demote chat creator")
