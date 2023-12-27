@@ -220,6 +220,19 @@
             "nl": "U verzendt te veel verzoeken",
             "it": "Stai inviando troppe richieste",
             "ro": "Trimiteți prea multe solicitări"
+        },
+        "token_expired": {
+            "uk": "Токен авторизації більше не дійсний. Якщо ви хочете повторити авторизацію, надішліть запит на новий токен.",
+            "en": "The authorization token is no longer valid. If you want to retry authorization, request a new token.",
+            "ru": "Токен авторизации больше не действителен. Если вы хотите повторить авторизацию, запросите новый токен.",
+            "be": "Токен аўтарызацыі больш не дзейнічае. Калі вы хочаце паўтарыць спробу аўтарызацыі, запытайце новы токен.",
+            "pl": "Token autoryzacyjny nie jest już ważny. Jeśli chcesz ponowić próbę autoryzacji, poproś o nowy token.",
+            "de": "Das Autorisierungstoken ist nicht mehr gültig. Wenn Sie die Autorisierung erneut versuchen möchten, fordern Sie ein neues Token an.",
+            "cs": "Autorizační token již není platný. Pokud chcete autorizaci znovu zkusit, požádejte o nový token.",
+            "sk": "Autorizačný token už nie je platný. Ak chcete autorizáciu zopakovať, požiadajte o nový token.",
+            "nl": "Het autorisatietoken is niet langer geldig. Als u de autorisatie opnieuw wilt proberen, vraagt u een nieuw token aan.",
+            "it": "Il token di autorizzazione non è più valido. Se vuoi ritentare l'autorizzazione, richiedi un nuovo token.",
+            "ro": "Indicatorul de autorizare nu mai este valabil. Dacă doriți să reîncercați autorizarea, solicitați un nou token."
         }
     },
     "valid_lang_keys": [
