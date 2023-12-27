@@ -4,6 +4,7 @@ from dispatcher import dp
 from actions.start import Start
 from actions.auth import LogOut
 from actions.basic import CheckProto
+from actions.client import Accounts
 
 from handlers.ratelimit import rate_limit
 
@@ -18,6 +19,12 @@ async def cmd_start(message: types.Message) -> types.Message:
 @rate_limit(2, "logout")
 async def cmd_logout(message: types.Message) -> types.Message:
     return await LogOut(message).process()
+
+
+@dp.message_handler(commands="accounts")
+@rate_limit(2, "accounts")
+async def cmd_accounts(message: types.Message) -> types.Message:
+    return await Accounts(message).process()
 
 
 @dp.message_handler(is_owner=True, commands="check-proto")
