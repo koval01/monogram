@@ -52,6 +52,9 @@ class Lang:
 
     @classmethod
     def lang_check(cls, message: types.Message) -> bool:
+        if message.from_user.is_bot:
+            return True
+        
         return message.from_user.language_code in cls.dictionary["valid_lang_keys"]
 
     @classmethod
