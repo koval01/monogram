@@ -233,6 +233,19 @@
             "nl": "Het autorisatietoken is niet langer geldig. Als u de autorisatie opnieuw wilt proberen, vraagt u een nieuw token aan.",
             "it": "Il token di autorizzazione non è più valido. Se vuoi ritentare l'autorizzazione, richiedi un nuovo token.",
             "ro": "Indicatorul de autorizare nu mai este valabil. Dacă doriți să reîncercați autorizarea, solicitați un nou token."
+        },
+        "try_again": {
+            "uk": "Спробувати ще",
+            "en": "Try again",
+            "ru": "Попробовать еще",
+            "be": "Паспрабуй яшчэ",
+            "pl": "Spróbuj ponownie",
+            "de": "Versuchen Sie es erneut",
+            "cs": "Zkus to znovu",
+            "sk": "Skúste to znova",
+            "nl": "Probeer het nog eens",
+            "it": "Riprova",
+            "ro": "Încearcă din nou"
         }
     },
     "valid_lang_keys": [
