@@ -67,11 +67,17 @@ class RollIn:
         await message.reply(Lang.get("token_expired", message), reply_markup=button)
         await message.delete()
 
+    @staticmethod
+    def logout_button(message: types.Message) -> InlineKeyboardMarkup:
+        return InlineKeyboardMarkup().add(InlineKeyboardButton(
+            Lang.get("logout_button", message), callback_data="logout_session"))
+
     async def process(self) -> types.Message:
         auth_client = await self.check_auth()
         if auth_client:
             return await self.message.reply(
-                Lang.get("welcome_back", self.message) % auth_client.name.split()[-1]
+                text=Lang.get("welcome_back", self.message) % auth_client.name.split()[-1],
+                reply_markup=self.logout_button(self.message)
             )
 
         roll = await Mono().roll_in()
@@ -143,7 +149,8 @@ class CheckToken:
 
         await bot.send_message(
             chat_id=message.chat.id,
-            text=Lang.get("mono_token_active", message) % client.name.split()[-1]
+            text=Lang.get("mono_token_active", message) % client.name.split()[-1],
+            reply_markup=RollIn.logout_button(message)
         )
 
         return True
