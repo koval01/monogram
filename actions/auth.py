@@ -24,8 +24,6 @@ class RollIn:
         
         keyboard.add(InlineKeyboardButton(
             Lang.get("link_button", self.message), url=roll.url))
-        keyboard.add(InlineKeyboardButton(
-            Lang.get("check_token_button", self.message), callback_data=f"mono_token_{roll.token}"))
         
         return keyboard
 
