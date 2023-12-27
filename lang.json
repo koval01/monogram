@@ -246,6 +246,19 @@
             "nl": "Probeer het nog eens",
             "it": "Riprova",
             "ro": "Încearcă din nou"
+        },
+        "card": {
+            "uk": "Картка %s %s",
+            "en": "Card %s %s",
+            "ru": "Карта %s %s",
+            "be": "Картка %s %s",
+            "pl": "Karta %s %s",
+            "de": "Karte %s %s",
+            "cs": "Karta %s %s",
+            "sk": "Karta %s %s",
+            "nl": "Kaart %s %s",
+            "it": "Carta %s %s",
+            "ro": "Card %s %s"
         }
     },
     "valid_lang_keys": [
