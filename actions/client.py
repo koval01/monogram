@@ -1,3 +1,5 @@
+import json
+
 from aiogram import types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -16,7 +18,15 @@ class Accounts:
         
     @property
     async def client(self) -> ClientModel:
-        return await Mono.client_info(self.message, await self.token)
+        redis_key = f"mono_client_{self.message.chat.id}"
+        client = await RedisStorage().get(redis_key)
+        if client:
+            return ClientModel(**json.loads(client))
+
+        client = await Mono.client_info(self.message, await self.token)
+        await RedisStorage().set(redis_key, client.model_dump_json(), ex=60)
+
+        return client
     
     @property
     async def token(self) -> str | None:
