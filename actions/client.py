@@ -4,11 +4,15 @@ from aiogram import types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from misc.mono import Mono
-from misc.models.client_info import Model as ClientModel, Account
 
+from misc.models.client_info import Model as ClientModel, Account
+from misc.models.client_info import Account as AccountModel
+
+from misc.image import ImageProcess
 from misc.redis_storage import RedisStorage
 
 from misc.lang import Lang
+from misc.other import Other
 
 
 class Accounts:
@@ -54,3 +58,40 @@ class Accounts:
         return await self.message.reply(
             repr(accounts), reply_markup=self.keyboard_create(accounts)
         )
+
+
+class AccountImage:
+
+    def __init__(self, message: types.Message, account: AccountModel) -> None:
+        self.message = message
+        self.account = account
+
+        self.background = "background.png"
+        self.fonts = {
+            "regular": "Montserrat-Regular.ttf",
+            "medium": "Montserrat-Medium.ttf",
+            "bold": "Montserrat-SemiBold.ttf"
+        }
+        self.currency_symbols = {
+            "UAH": "₴",
+            "USD": "$",
+            "EUR": "€"
+        }
+
+    def int_display(self, value: int | float, currency: str) -> str:
+        return "%s %s" % (Other.format_number(value), self.currency_symbols[currency])
+
+    def build_image(self) -> bytes:
+        image = ImageProcess(self.background)
+        image.add_text(
+            text=self.int_display(self.account.balance, self.account.currencyCode),
+            pos=(0, 128),
+            color=(255, 255, 255),
+            font=self.fonts["bold"],
+            size=120,
+            align="center"
+        )
+        return bytes(image)
+
+    async def process(self) -> types.Message:
+        return await self.message.reply_photo(self.build_image())
