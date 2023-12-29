@@ -12,3 +12,7 @@ class Other:
             }[lang]
 
         return translit(name, 'uk', reversed=True)
+
+    @staticmethod
+    def format_number(number: int | float) -> str:
+        return '{:,}'.format(number).replace(',', ' ')
