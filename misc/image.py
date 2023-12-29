@@ -17,7 +17,7 @@ class ImageProcess:
         else:
             file = os.path.join(self.path, "images", file)
             
-        self.image = Image.open(file).convert('RGB')
+        self.image = Image.open(file).convert('RGBA')
         
     def add_text(
             self,
@@ -41,6 +41,6 @@ class ImageProcess:
         
     def __bytes__(self) -> bytes:
         buffered = BytesIO()
-        self.image.save(buffered, format="JPEG", quality=75)
+        self.image.save(buffered, format="PNG", quality=75)
         
         return buffered.getvalue()[:]
