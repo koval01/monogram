@@ -97,16 +97,19 @@ class RollIn:
         await message.delete()
 
     @staticmethod
-    def logout_button(message: types.Message) -> InlineKeyboardMarkup:
-        return InlineKeyboardMarkup().add(InlineKeyboardButton(
-            Lang.get("logout_button", message), callback_data="logout_session"))
+    def session_buttons(message: types.Message) -> InlineKeyboardMarkup:
+        keyboard = InlineKeyboardMarkup()
+        keyboard.add(InlineKeyboardButton(Lang.get("accounts_button", message), callback_data="accounts_button"))
+        keyboard.add(InlineKeyboardButton(Lang.get("logout_button", message), callback_data="logout_session"))
+
+        return keyboard
 
     async def process(self) -> types.Message:
         auth_client = await self.check_auth()
         if auth_client:
             return await self.message.reply(
                 text=Lang.get("welcome_back", self.message) % auth_client.name.split()[-1],
-                reply_markup=self.logout_button(self.message)
+                reply_markup=self.session_buttons(self.message)
             )
 
         roll = await Mono().roll_in()
@@ -180,7 +183,7 @@ class CheckToken:
         await bot.send_message(
             chat_id=message.chat.id,
             text=Lang.get("mono_token_active", message) % client.name.split()[-1],
-            reply_markup=RollIn.logout_button(message)
+            reply_markup=RollIn.session_buttons(message)
         )
 
         return True

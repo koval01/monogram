@@ -272,6 +272,19 @@
             "nl": "Dit verzoek kon niet worden verwerkt. Probeer de bot opnieuw op te starten met de opdracht /start. Als dat niet werkt, probeer het dan later opnieuw.",
             "it": "Impossibile elaborare questa richiesta. Prova a riavviare il bot utilizzando il comando /start. Se il problema persiste, riprova più tardi.",
             "ro": "Această solicitare nu a putut fi procesată. Încercați să reporniți botul folosind comanda /start. Dacă nu funcționează, încercați din nou mai târziu."
+        },
+        "accounts_button": {
+            "uk": "Рахунки",
+            "en": "Accounts",
+            "ru": "Счета",
+            "be": "Рахункі",
+            "pl": "Konta",
+            "de": "Konten",
+            "cs": "Účty",
+            "sk": "Účty",
+            "nl": "Rekeningen",
+            "it": "Conti",
+            "ro": "Conturi"
         }
     },
     "valid_lang_keys": [
