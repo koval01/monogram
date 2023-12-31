@@ -6,6 +6,8 @@ from actions.auth import LogOut
 from actions.basic import CheckProto
 from actions.client import Accounts
 
+from misc.lang import Lang
+
 from handlers.ratelimit import rate_limit
 
 
@@ -35,3 +37,9 @@ async def cmd_check_proto(message: types.Message) -> types.Message:
 @dp.message_handler(is_owner=True, commands="ping")
 async def cmd_ping_bot(message: types.Message) -> types.Message:
     return await message.reply("👊 Up & Running!")
+
+
+@dp.message_handler(content_types=types.ContentType.ANY)
+@rate_limit(1, 'any_data')
+async def any_data(message: types.Message) -> types.Message:
+    return await message.reply(Lang.get("unknown_request", message))
