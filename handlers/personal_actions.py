@@ -12,19 +12,19 @@ from handlers.ratelimit import rate_limit
 
 
 @dp.message_handler(commands="start")
-@rate_limit(3, "start")
+@rate_limit(4, "start")
 async def cmd_start(message: types.Message) -> types.Message:
     return await Start(message).process()
 
 
 @dp.message_handler(commands="logout")
-@rate_limit(2, "logout")
+@rate_limit(1, "logout")
 async def cmd_logout(message: types.Message) -> types.Message:
     return await LogOut(message).process()
 
 
 @dp.message_handler(commands="accounts")
-@rate_limit(2, "accounts")
+@rate_limit(1, "accounts")
 async def cmd_accounts(message: types.Message) -> types.Message:
     return await Accounts(message).process()
 
