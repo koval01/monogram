@@ -5,7 +5,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from filters import IsOwnerFilter
-from middleware import ThrottlingMiddleware
+from middleware import ThrottlingMiddleware, AnalyticsMiddleware
 
 import config
 
@@ -33,3 +33,4 @@ dp.filters_factory.bind(IsOwnerFilter)
 
 # activate middleware
 dp.middleware.setup(ThrottlingMiddleware())
+dp.middleware.setup(AnalyticsMiddleware())

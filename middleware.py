@@ -7,6 +7,8 @@ from aiogram.dispatcher.handler import CancelHandler, current_handler
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.utils.exceptions import Throttled
 
+from misc.analytics import Analytics
+
 from misc.lang import Lang
 
 
@@ -122,3 +124,18 @@ class ThrottlingMiddleware(BaseMiddleware):
 
         # Sleep.
         await asyncio.sleep(delta)
+
+
+class AnalyticsMiddleware(BaseMiddleware):
+    def __init__(self):
+        super(AnalyticsMiddleware, self).__init__()
+
+    @staticmethod
+    async def on_process_message(message: types.Message, _):
+        handler = current_handler.get()
+        await Analytics(message=message, alt_action=handler.__name__).send()
+
+    @staticmethod
+    async def on_process_callback_query(query: types.CallbackQuery, _: any = None) -> None:
+        handler = current_handler.get()
+        await Analytics(message=query.message, alt_action=handler.__name__).send()
