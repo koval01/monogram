@@ -131,11 +131,12 @@ class AnalyticsMiddleware(BaseMiddleware):
         super(AnalyticsMiddleware, self).__init__()
 
     @staticmethod
-    async def on_process_message(message: types.Message, _):
+    async def _send(message: types.Message) -> None:
         handler = current_handler.get()
         await Analytics(message=message, alt_action=handler.__name__).send()
 
-    @staticmethod
-    async def on_process_callback_query(query: types.CallbackQuery, _: any = None) -> None:
-        handler = current_handler.get()
-        await Analytics(message=query.message, alt_action=handler.__name__).send()
+    async def on_process_message(self, message: types.Message, _: any = None) -> None:
+        await self._send(message)
+
+    async def on_process_callback_query(self, query: types.CallbackQuery, _: any = None) -> None:
+        await self._send(query.message)
