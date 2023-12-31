@@ -259,6 +259,19 @@
             "nl": "Kaart %s %s",
             "it": "Carta %s %s",
             "ro": "Card %s %s"
+        },
+        "unknown_request": {
+            "uk": "Не вдалося опрацювати цей запит. Спробуйте перезапустити бота за допомогою команди /start. Якщо це не допогло, то спробуйте пізніше.",
+            "en": "This request could not be processed. Try restarting the bot using the /start command. If that doesn't work, try again later.",
+            "ru": "Не удалось обработать этот запрос. Попытайтесь перезапустить бота с помощью команды /start. Если это не достигло, то попробуйте позже.",
+            "be": "Гэты запыт не можа быць апрацаваны. Паспрабуйце перазапусціць бота з дапамогай каманды /start. Калі гэта не спрацуе, паўтарыце спробу пазней.",
+            "pl": "Nie można przetworzyć tego żądania. Spróbuj ponownie uruchomić bota za pomocą polecenia /start. Jeśli to nie zadziała, spróbuj ponownie później.",
+            "de": "Diese Anfrage konnte nicht bearbeitet werden. Versuchen Sie, den Bot mit dem Befehl /start neu zu starten. Wenn das nicht funktioniert, versuchen Sie es später noch einmal.",
+            "cs": "Tento požadavek nebylo možné zpracovat. Zkuste bota restartovat pomocí příkazu /start. Pokud to nepomůže, zkuste to znovu později.",
+            "sk": "Túto žiadosť nebolo možné spracovať. Skúste reštartovať robota pomocou príkazu /start. Ak to nepomôže, skúste to znova neskôr.",
+            "nl": "Dit verzoek kon niet worden verwerkt. Probeer de bot opnieuw op te starten met de opdracht /start. Als dat niet werkt, probeer het dan later opnieuw.",
+            "it": "Impossibile elaborare questa richiesta. Prova a riavviare il bot utilizzando il comando /start. Se il problema persiste, riprova più tardi.",
+            "ro": "Această solicitare nu a putut fi procesată. Încercați să reporniți botul folosind comanda /start. Dacă nu funcționează, încercați din nou mai târziu."
         }
     },
     "valid_lang_keys": [
