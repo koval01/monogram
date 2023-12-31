@@ -17,6 +17,11 @@ async def errors_handler(update, exception):
     :return: stdout logging
     """
 
+    try:
+        update = update.callback_query
+    except AttributeError:
+        pass
+
     await bot.send_message(
         update.message.chat.id,
         Lang.get("exception", update.message) % exception.__class__.__name__
