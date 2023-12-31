@@ -18,7 +18,7 @@ class ImageProcess:
             file = os.path.join(self.path, "images", file)
             
         self.image = Image.open(file).convert('RGBA')
-        
+
     def add_text(
             self,
             text: str,

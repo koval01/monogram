@@ -1,4 +1,3 @@
-import base64
 import asyncio
 
 from misc.mono import Mono
@@ -8,11 +7,41 @@ from misc.redis_storage import RedisStorage
 from misc.models.roll_in import Model as RollModel
 from misc.models.client_info import Model as ClientInfoModel
 
+from misc.image import ImageProcess
+
 from aiogram import types
 from aiogram.utils import exceptions
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from dispatcher import bot
+
+
+class QRImage:
+
+    def __init__(self, roll: RollModel, background: str = "monocat_auth.png") -> None:
+        self.roll = roll
+        self.image_back = ImageProcess(background)
+        self.image_qr = ImageProcess(roll.qr)
+
+    def _link_preview(self) -> None:
+        url = self.roll.url.split("//")[1]
+        self.image_back.add_text(
+            text=url,
+            pos=(0, 600),
+            color=(0, 0, 0),
+            font="Montserrat-Regular.ttf",
+            size=12,
+            align="center"
+        )
+
+    @property
+    def get(self) -> bytes:
+        self.image_back.image.paste(
+            self.image_qr.image,
+            (185, 380)
+        )
+        self._link_preview()
+        return bytes(self.image_back)
 
 
 class RollIn:
@@ -90,9 +119,10 @@ class RollIn:
             return await self.message.reply(Lang.get("update_mono_token_error", self.message))
 
         msg = await self.message.reply_photo(
-            photo=base64.decodebytes(roll.qr),
+            photo=QRImage(roll).get,
             caption=Lang.get("start", self.message),
-            reply_markup=self.keyboard_create(roll)
+            reply_markup=self.keyboard_create(roll),
+            protect_content=True
         )
 
         RollIn.future_list[self.message.chat.id] = asyncio.ensure_future(self.token_check_loop(msg))
