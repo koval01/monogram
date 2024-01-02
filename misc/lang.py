@@ -1,10 +1,14 @@
 import json
 import logging
+
 from aiogram import types
+
+from misc.redis_storage import RedisStorage
 
 
 class Lang:
     dictionary: dict = {}
+    usr_langs: dict = {}
     default_lang: str = "en"
     
     def __init__(self) -> None:
@@ -57,10 +61,43 @@ class Lang:
         
         return message.from_user.language_code in cls.dictionary["valid_lang_keys"]
 
+    @staticmethod
+    async def storage(usr_id: int, lang_code: str = None) -> str | None:
+        key = f"usr_lang_{usr_id}"
+        if lang_code:
+            await RedisStorage().set(key, lang_code)
+        else:
+            return await RedisStorage().get(key)
+
     @classmethod
-    def get(cls, key: str, message: types.Message or any, code: str = None) -> str:
+    async def _get(cls, message: types.Message or types.CallbackQuery, code: str = None) -> str:
+        usr_id: int = 0
+        if message.from_user:
+            code = message.from_user.language_code
+            usr_id = message.from_id if not message.from_user.is_bot else 0
+        if message.reply_to_message:
+            code = message.reply_to_message.from_user.language_code
+            usr_id = message.reply_to_message.from_id if not message.reply_to_message.from_user.is_bot else 0
+        if message.chat.type == "private":
+            usr_id = message.chat.id
+
+        if usr_id and code:
+            cls.usr_langs[usr_id] = code
+            await cls.storage(usr_id, code)
+
+        if usr_id in cls.usr_langs:
+            return cls.usr_langs[usr_id]
+
+        storage = await cls.storage(usr_id)
+        if storage:
+            return storage
+
+        return cls.default_lang
+
+    @classmethod
+    async def get(cls, key: str, message: types.Message or types.CallbackQuery, code: str = None) -> str:
         try:
-            return cls.dictionary["keys"][key][code if code else message.from_user.language_code]
+            return cls.dictionary["keys"][key][await cls._get(message, code)]
         except (KeyError, AttributeError):
             return cls.dictionary["keys"][key][cls.default_lang]
         

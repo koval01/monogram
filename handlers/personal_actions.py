@@ -42,4 +42,4 @@ async def cmd_ping_bot(message: types.Message) -> types.Message:
 @dp.message_handler(content_types=types.ContentType.ANY)
 @rate_limit(1, 'any_data')
 async def any_data(message: types.Message) -> types.Message:
-    return await message.reply(Lang.get("unknown_request", message))
+    return await message.reply(await Lang.get("unknown_request", message))

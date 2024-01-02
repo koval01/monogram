@@ -50,11 +50,11 @@ class RollIn:
     def __init__(self, message: types.Message) -> None:
         self.message = message
     
-    def keyboard_create(self, roll: RollModel) -> InlineKeyboardMarkup:
+    async def keyboard_create(self, roll: RollModel) -> InlineKeyboardMarkup:
         keyboard = InlineKeyboardMarkup()
         
         keyboard.add(InlineKeyboardButton(
-            Lang.get("link_button", self.message), url=roll.url))
+            await Lang.get("link_button", self.message), url=roll.url))
         
         return keyboard
 
@@ -91,16 +91,16 @@ class RollIn:
                 return
 
         button = InlineKeyboardMarkup().add(InlineKeyboardButton(
-            Lang.get("try_again", message), callback_data="new_token"))
+            await Lang.get("try_again", message), callback_data="new_token"))
 
-        await message.reply(Lang.get("token_expired", message), reply_markup=button)
+        await message.reply(await Lang.get("token_expired", message), reply_markup=button)
         await message.delete()
 
     @staticmethod
-    def session_buttons(message: types.Message) -> InlineKeyboardMarkup:
+    async def session_buttons(message: types.Message) -> InlineKeyboardMarkup:
         keyboard = InlineKeyboardMarkup()
-        keyboard.add(InlineKeyboardButton(Lang.get("accounts_button", message), callback_data="accounts_button"))
-        keyboard.add(InlineKeyboardButton(Lang.get("logout_button", message), callback_data="logout_session"))
+        keyboard.add(InlineKeyboardButton(await Lang.get("accounts_button", message), callback_data="accounts_button"))
+        keyboard.add(InlineKeyboardButton(await Lang.get("logout_button", message), callback_data="logout_session"))
 
         return keyboard
 
@@ -108,23 +108,23 @@ class RollIn:
         auth_client = await self.check_auth()
         if auth_client:
             return await self.message.reply(
-                text=Lang.get("welcome_back", self.message) % auth_client.name.split()[-1],
-                reply_markup=self.session_buttons(self.message)
+                text=await Lang.get("welcome_back", self.message) % auth_client.name.split()[-1],
+                reply_markup=await self.session_buttons(self.message)
             )
 
         roll = await Mono().roll_in()
 
         if not roll:
-            return await self.message.reply(Lang.get("roll_error", self.message))
+            return await self.message.reply(await Lang.get("roll_error", self.message))
 
         token_set = await RedisStorage().set(f"mono_start_{self.message.chat.id}", roll.token)
         if not token_set:
-            return await self.message.reply(Lang.get("update_mono_token_error", self.message))
+            return await self.message.reply(await Lang.get("update_mono_token_error", self.message))
 
         msg = await self.message.reply_photo(
             photo=QRImage(roll).get,
-            caption=Lang.get("start", self.message),
-            reply_markup=self.keyboard_create(roll),
+            caption=await Lang.get("start", self.message),
+            reply_markup=await self.keyboard_create(roll),
             protect_content=True
         )
 
@@ -143,9 +143,9 @@ class LogOut:
         storage_flush = await RedisStorage().forget(f"mono_auth_{self.message.chat.id}")
 
         if not storage_flush:
-            return await self.message.reply(Lang.get("unknown_error", self.message))
+            return await self.message.reply(await Lang.get("unknown_error", self.message))
 
-        return await self.message.reply(Lang.get("logout", self.message))
+        return await self.message.reply(await Lang.get("logout", self.message))
 
 
 class CheckToken:
@@ -171,7 +171,7 @@ class CheckToken:
         if not await RedisStorage().set(f"mono_auth_{message.chat.id}", token):
             await bot.send_message(
                 chat_id=message.chat.id,
-                text=Lang.get("update_mono_token_error", message)
+                text=await Lang.get("update_mono_token_error", message)
             )
             return False
 
@@ -182,8 +182,8 @@ class CheckToken:
 
         await bot.send_message(
             chat_id=message.chat.id,
-            text=Lang.get("mono_token_active", message) % client.name.split()[-1],
-            reply_markup=RollIn.session_buttons(message)
+            text=await Lang.get("mono_token_active", message) % client.name.split()[-1],
+            reply_markup=await RollIn.session_buttons(message)
         )
 
         return True

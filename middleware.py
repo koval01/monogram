@@ -46,9 +46,9 @@ class ThrottlingMiddleware(BaseMiddleware):
         if throttled.exceeded_count <= 2:
             if type(message) is types.CallbackQuery:
                 query = message
-                await query.answer(Lang.get("ratelimit", query.message), show_alert=True)
+                await query.answer(await Lang.get("ratelimit", query.message), show_alert=True)
             else:
-                await message.reply(Lang.get("ratelimit", message))
+                await message.reply(await Lang.get("ratelimit", message))
 
         await asyncio.sleep(delta)
 

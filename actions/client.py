@@ -42,18 +42,20 @@ class Accounts:
     async def token(self) -> str | None:
         return await RedisStorage().get(f"mono_auth_{self.message.chat.id}")
     
-    def keyboard_create(self, accounts: list[AccountModel], selected_account: AccountModel) -> InlineKeyboardMarkup:
+    async def keyboard_create(
+            self, accounts: list[AccountModel], selected_account: AccountModel
+    ) -> InlineKeyboardMarkup:
         keyboard = InlineKeyboardMarkup()
         check_mark = "☑️"
         
         for account in accounts:
             account_name = account.type.title()
             if account.type == "yellow":
-                account_name = Lang.get("yellow", self.message)
+                account_name = await Lang.get("yellow", self.message)
 
-            account_name = Lang.get("card", self.message) % (account_name, account.currencyCode)
+            account_name = await Lang.get("card", self.message) % (account_name, account.currencyCode)
             if account.type == "fop":
-                account_name = "%s %s" % (Lang.get("fop", self.message), account.currencyCode)
+                account_name = "%s %s" % (await Lang.get("fop", self.message), account.currencyCode)
 
             keyboard.add(
                 InlineKeyboardButton(
@@ -91,7 +93,7 @@ class Accounts:
             selected_account = [a for a in accounts if a.currencyCode == "UAH"][0]
 
         image = bytes(AccountImage(self.message, selected_account))
-        markup = self.keyboard_create(accounts, selected_account)
+        markup = await self.keyboard_create(accounts, selected_account)
 
         if self.query:
             await self.message.delete()

@@ -15,7 +15,7 @@ class Start:
 
     async def check_language(self) -> None:
         if not Lang.lang_check(self.message):
-            await self.message.answer(Lang.get("default_language", self.message))
+            await self.message.answer(await Lang.get("default_language", self.message))
 
     async def process(self) -> types.Message:
         await self.check_language()
