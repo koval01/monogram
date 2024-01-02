@@ -28,7 +28,7 @@ class MonoAPI:
                            if response.headers.get("content-type").split(";")[0] == "application/json" \
                            else await response.text()
                     return body if response.status == 200 else None
-            except asyncio.TimeoutError:
+            except (asyncio.TimeoutError, TypeError):
                 return {"error": None}
             
     async def check_proto(self) -> dict | None:
