@@ -1,3 +1,4 @@
+import re
 import json
 
 from aiogram import types
@@ -5,7 +6,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from misc.mono import Mono
 
-from misc.models.client_info import Model as ClientModel, Account
+from misc.models.client_info import Model as ClientModel
 from misc.models.client_info import Account as AccountModel
 
 from misc.image import ImageProcess
@@ -17,9 +18,14 @@ from misc.other import Other
 
 class Accounts:
 
-    def __init__(self, message: types.Message) -> None:
+    def __init__(self, message: types.Message | types.CallbackQuery) -> None:
         self.message = message
+        self.query = None
         
+        if type(message) is types.CallbackQuery:
+            self.message = message.message
+            self.query = message
+
     @property
     async def client(self) -> ClientModel:
         redis_key = f"mono_client_{self.message.chat.id}"
@@ -36,8 +42,9 @@ class Accounts:
     async def token(self) -> str | None:
         return await RedisStorage().get(f"mono_auth_{self.message.chat.id}")
     
-    def keyboard_create(self, accounts: list[Account]) -> InlineKeyboardMarkup:
+    def keyboard_create(self, accounts: list[AccountModel], selected_account: AccountModel) -> InlineKeyboardMarkup:
         keyboard = InlineKeyboardMarkup()
+        check_mark = "☑️"
         
         for account in accounts:
             account_name = account.type.title()
@@ -50,21 +57,47 @@ class Accounts:
 
             keyboard.add(
                 InlineKeyboardButton(
-                    text=account_name,
+                    text=f"{account_name} {check_mark if account is selected_account else ''}",
                     callback_data=f"get_account_info_{account.type}_{account.currencyCode}"
                 )
             )
 
         return keyboard
 
-    async def get_list(self) -> list[Account]:
+    async def get_list(self) -> list[AccountModel]:
         client = await self.client
         return client.accounts
 
+    def _process_query(self, accounts: list[AccountModel]) -> AccountModel | None:
+        data = re.search(r"get_account_info_(?P<account_type>.*?)_(?P<currency>[A-Z]*$)", self.query.data).groupdict()
+        if not all(k in data.keys() for k in ("account_type", "currency",)):
+            return
+
+        if not accounts:
+            return
+
+        for account in accounts:
+            account: AccountModel
+            if account.type == data["account_type"] \
+                    and account.currencyCode.upper() == data["currency"].upper():
+                return account
+
     async def process(self) -> types.Message:
         accounts = await self.get_list()
-        return await self.message.reply(
-            repr(accounts), reply_markup=self.keyboard_create(accounts)
+
+        if self.query:
+            selected_account = self._process_query(accounts)
+        else:
+            selected_account = [a for a in accounts if a.currencyCode == "UAH"][0]
+
+        image = bytes(AccountImage(self.message, selected_account))
+        markup = self.keyboard_create(accounts, selected_account)
+
+        if self.query:
+            await self.message.delete()
+
+        return await self.message.answer_photo(
+            image, reply_markup=markup
         )
 
 
@@ -101,5 +134,5 @@ class AccountImage:
         )
         return bytes(image)
 
-    async def process(self) -> types.Message:
-        return await self.message.reply_photo(self.build_image())
+    def __bytes__(self) -> bytes:
+        return self.build_image()

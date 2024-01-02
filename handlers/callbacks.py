@@ -31,4 +31,4 @@ async def accounts_button(callback_query: types.CallbackQuery):
 @dp.callback_query_handler(lambda c: re.match(r"get_account_info_(.*?)_([A-Z]*$)", c.data))
 @rate_limit(1, "select_account_button")
 async def select_account_button(callback_query: types.CallbackQuery):
-    return await callback_query.message.reply(repr(callback_query))
+    return await Accounts(callback_query).process()

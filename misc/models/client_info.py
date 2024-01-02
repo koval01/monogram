@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Annotated
+from typing import Annotated, Literal
 
 from typing import List
 
@@ -30,7 +30,7 @@ class Account(BaseModel):
     balance: SeperateFloat
     creditLimit: SeperateFloat
     maskedPan: List[str]
-    type: str
+    type: Literal["black", "white", "platinum", "iron", "fop", "yellow", "eAid"]
     iban: str
 
 
