@@ -285,6 +285,32 @@
             "nl": "Rekeningen",
             "it": "Conti",
             "ro": "Conturi"
+        },
+        "fop": {
+            "uk": "Рахунок підприємця",
+            "en": "Entrepreneur's account",
+            "ru": "Счет предпринимателя",
+            "be": "Рахунак прадпрымальніка",
+            "pl": "Konto przedsiębiorcy",
+            "de": "Unternehmerkonto",
+            "cs": "Účet podnikatele",
+            "sk": "Účet podnikateľa",
+            "nl": "Ondernemersaccount",
+            "it": "Il conto dell'imprenditore",
+            "ro": "Contul antreprenorului"
+        },
+        "yellow": {
+            "uk": "Дитяча",
+            "en": "Children's",
+            "ru": "Детская",
+            "be": "Дзіцячая",
+            "pl": "Dziecięce",
+            "de": "Kinder",
+            "cs": "Dětské",
+            "sk": "Detský",
+            "nl": "Kinderen",
+            "it": "Bambini",
+            "ro": "Pentru copii"
         }
     },
     "valid_lang_keys": [

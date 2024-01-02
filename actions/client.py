@@ -40,9 +40,17 @@ class Accounts:
         keyboard = InlineKeyboardMarkup()
         
         for account in accounts:
+            account_name = account.type.title()
+            if account.type == "yellow":
+                account_name = Lang.get("yellow", self.message)
+
+            account_name = Lang.get("card", self.message) % (account_name, account.currencyCode)
+            if account.type == "fop":
+                account_name = "%s %s" % (Lang.get("fop", self.message), account.currencyCode)
+
             keyboard.add(
                 InlineKeyboardButton(
-                    text=Lang.get("card", self.message) % (account.type.title(), account.currencyCode),
+                    text=account_name,
                     callback_data=f"get_account_info_{account.type}_{account.currencyCode}"
                 )
             )
