@@ -19,6 +19,17 @@ class ImageProcess:
             
         self.image = Image.open(file).convert('RGBA')
 
+    def perspective(self, mv: float) -> None:
+        width, height = self.image.size
+
+        xshift = abs(mv) * width
+        new_width = width + int(round(xshift))
+
+        self.image = self.image.transform(
+            (new_width, height),
+            Image.AFFINE, (1, mv, -xshift if mv > 0 else 0, 0, 1, 0), Image.BICUBIC
+        )
+
     def add_text(
             self,
             text: str,
@@ -41,6 +52,6 @@ class ImageProcess:
         
     def __bytes__(self) -> bytes:
         buffered = BytesIO()
-        self.image.save(buffered, format="PNG", quality=75)
+        self.image.save(buffered, format="PNG", quality=95)
         
         return buffered.getvalue()[:]

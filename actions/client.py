@@ -1,8 +1,12 @@
 import re
 import json
 
+from textwrap import wrap
+
 from aiogram import types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+from PIL import Image
 
 from misc.mono import Mono
 
@@ -48,6 +52,7 @@ class Accounts:
         keyboard = InlineKeyboardMarkup()
         check_mark = "☑️"
         
+        accounts = sorted(accounts, key=lambda k: (k.type, k.currencyCode))
         for account in accounts:
             account_name = account.type.title()
             if account.type == "yellow":
@@ -66,9 +71,9 @@ class Accounts:
 
         return keyboard
 
-    async def get_list(self) -> list[AccountModel]:
+    async def get_list(self) -> (list[AccountModel], AccountModel):
         client = await self.client
-        return client.accounts
+        return client.accounts, client
 
     def _process_query(self, accounts: list[AccountModel]) -> AccountModel | None:
         data = re.search(r"get_account_info_(?P<account_type>.*?)_(?P<currency>[A-Z]*$)", self.query.data).groupdict()
@@ -85,14 +90,14 @@ class Accounts:
                 return account
 
     async def process(self) -> types.Message:
-        accounts = await self.get_list()
+        accounts, client = await self.get_list()
 
         if self.query:
             selected_account = self._process_query(accounts)
         else:
             selected_account = [a for a in accounts if a.currencyCode == "UAH"][0]
 
-        image = bytes(AccountImage(self.message, selected_account))
+        image = await AccountImage(self.message, selected_account, client.name).result()
         markup = await self.keyboard_create(accounts, selected_account)
 
         if self.query:
@@ -105,9 +110,10 @@ class Accounts:
 
 class AccountImage:
 
-    def __init__(self, message: types.Message, account: AccountModel) -> None:
+    def __init__(self, message: types.Message, account: AccountModel, client_name: str) -> None:
         self.message = message
         self.account = account
+        self.client_name = client_name
 
         self.background = "background.png"
         self.fonts = {
@@ -124,17 +130,99 @@ class AccountImage:
     def int_display(self, value: int | float, currency: str) -> str:
         return "%s %s" % (Other.format_number(value), self.currency_symbols[currency])
 
-    def build_image(self) -> bytes:
-        image = ImageProcess(self.background)
-        image.add_text(
+    @property
+    def card(self) -> Image:
+        card = ImageProcess(f"{self.account.type}-card.png")
+        card.add_text(  # card holder
+            text=self.client_name,
+            pos=(42, 298),
+            color={
+                "black": (255, 255, 255),
+                "white": (0, 0, 0),
+                "yellow": (0, 0, 0)
+            }[self.account.type],
+            font=self.fonts["medium"],
+            size=26, align="left"
+        ) if self.account.type in ["black", "white", "platinum", "iron", "yellow"] else None
+        card.add_text(  # currency
+            text=self.account.currencyCode,
+            pos=(482, 40),
+            color=(115, 115, 115),
+            font=self.fonts["regular"],
+            size=24, align="left"
+        ) if self.account.type == "black" else None
+
+        card.perspective(-.3)
+        card.image = card.image.rotate(10, resample=Image.BICUBIC, expand=True)
+
+        return card
+
+    async def build_image(self) -> bytes:
+        background = ImageProcess(self.background)
+        background.add_text(  # total balance
             text=self.int_display(self.account.balance, self.account.currencyCode),
-            pos=(0, 128),
+            pos=(0, 45),
             color=(255, 255, 255),
             font=self.fonts["bold"],
-            size=120,
-            align="center"
+            size=120, align="center"
         )
-        return bytes(image)
 
-    def __bytes__(self) -> bytes:
-        return self.build_image()
+        # pan
+        if self.account.maskedPan:
+            masked_pan = " ".join(wrap(self.account.maskedPan[0], 4))
+            _ = masked_pan
+
+        if self.account.creditLimit:
+            vl = 420
+            vl_i = 695
+            f_size = 23
+            font = "regular"
+            color_tone = 222
+
+            ow_h = 190
+            cd_h = 225
+
+            # own funds
+            background.add_text(
+                text=await Lang.get("own_funds", self.message),
+                pos=(vl, ow_h),
+                color=(color_tone,)*3,
+                font=self.fonts[font],
+                size=f_size, align="left"
+            )
+            background.add_text(
+                text=self.int_display((self.account.balance - self.account.creditLimit), self.account.currencyCode),
+                pos=(vl_i, ow_h),
+                color=(color_tone,)*3,
+                font=self.fonts[font],
+                size=f_size, align="right"
+            )
+
+            # credit limit
+            background.add_text(
+                text=await Lang.get("credit_limit", self.message),
+                pos=(vl, cd_h),
+                color=(color_tone,)*3,
+                font=self.fonts[font],
+                size=f_size, align="left"
+            )
+            background.add_text(
+                text=self.int_display(self.account.creditLimit, self.account.currencyCode),
+                pos=(vl_i, cd_h),
+                color=(color_tone,)*3,
+                font=self.fonts[font],
+                size=f_size, align="right"
+            )
+
+        # paste client card
+        card = self.card.image
+        background.image.paste(card, (300, 240), card)
+
+        # decoration
+        cat = ImageProcess("sitting_cat.png").image
+        background.image.paste(cat, (840, 420), cat)
+
+        return bytes(background)
+
+    async def result(self) -> bytes:
+        return await self.build_image()

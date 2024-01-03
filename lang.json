@@ -311,6 +311,32 @@
             "nl": "Kinderen",
             "it": "Bambini",
             "ro": "Pentru copii"
+        },
+        "own_funds": {
+            "uk": "Власні кошти",
+            "en": "Own funds",
+            "ru": "Собственные средства",
+            "be": "Уласныя сродкі",
+            "pl": "Fundusze własne",
+            "de": "Eigenmittel",
+            "cs": "Vlastní prostředky",
+            "sk": "Vlastné prostriedky",
+            "nl": "Eigen middelen",
+            "it": "Fondi propri",
+            "ro": "Fonduri proprii"
+        },
+        "credit_limit": {
+            "uk": "Кредитний ліміт",
+            "en": "Credit limit",
+            "ru": "Кредитный лимит",
+            "be": "Крэдытны ліміт",
+            "pl": "Limit kredytowy",
+            "de": "Kreditlimit",
+            "cs": "Úvěrový limit",
+            "sk": "Úverový limit",
+            "nl": "Kredietlimiet",
+            "it": "Limite di credito",
+            "ro": "Limita de credit"
         }
     },
     "valid_lang_keys": [

@@ -16,4 +16,4 @@ class Other:
 
     @staticmethod
     def format_number(number: int | float) -> str:
-        return '{:,}'.format(number).replace(',', ' ')
+        return '{:,.2f}'.format(number).replace(',', ' ')
