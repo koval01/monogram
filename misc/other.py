@@ -1,4 +1,5 @@
-from transliterate import translit
+import re
+import cyrtranslit
 
 
 class Other:
@@ -11,7 +12,7 @@ class Other:
                 "ru": name.lower().replace("і", "и").title()
             }[lang]
 
-        return translit(name, 'uk', reversed=True)
+        return re.sub(r"[^a-zA-Z\s]+", "", cyrtranslit.to_latin(name, "ru").title())
 
     @staticmethod
     def format_number(number: int | float) -> str:

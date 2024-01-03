@@ -7,6 +7,6 @@ redis==5.0.1
 # Other packages
 python-dotenv==1.0.0
 pydantic==2.5.3
-transliterate==1.10.2
+cyrtranslit
 sentry-sdk
 Pillow==10.1.0
