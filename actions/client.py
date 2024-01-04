@@ -1,6 +1,8 @@
 import re
 import json
 
+from time import time
+
 from textwrap import wrap
 
 from aiogram import types
@@ -89,6 +91,34 @@ class Accounts:
                     and account.currencyCode.upper() == data["currency"].upper():
                 return account
 
+    async def storage(self, account: AccountModel, message: types.Message = None) -> str | None:
+        key = f"acc_{account.type}_{account.currencyCode}_{self.message.chat.id}"
+        balance = int(account.balance*100)
+
+        id_buff = await RedisStorage().get(key)
+
+        if id_buff:
+            kv = json.loads(id_buff)
+            if balance == kv["balance"]:
+                return kv["file_id"]
+
+        if not message:
+            return
+
+        photo_list = message.photo
+        if not photo_list:
+            return
+
+        photo_list = sorted(photo_list, key=lambda k: -k.file_size)
+        id_buff_var = {
+            "file_id": photo_list[0].file_id,
+            "balance": balance,
+            "timestamp": int(time())
+        }
+        await RedisStorage().set(key, json.dumps(id_buff_var), ex=3600)
+
+        return None
+
     async def process(self) -> types.Message:
         accounts, client = await self.get_list()
 
@@ -100,12 +130,19 @@ class Accounts:
         image = await AccountImage(self.message, selected_account, client.name).result()
         markup = await self.keyboard_create(accounts, selected_account)
 
+        file_id = await self.storage(selected_account)
+        if file_id:
+            image = file_id
+
         if self.query:
             await self.message.delete()
 
-        return await self.message.answer_photo(
+        answ_photo = await self.message.answer_photo(
             image, reply_markup=markup
         )
+
+        await self.storage(selected_account, answ_photo)
+        return answ_photo
 
 
 class AccountImage:
