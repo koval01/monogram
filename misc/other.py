@@ -17,3 +17,16 @@ class Other:
     @staticmethod
     def format_number(number: int | float) -> str:
         return '{:,.2f}'.format(number).replace(',', ' ')
+
+    @staticmethod
+    def identify_credit_card(card_number: int) -> str | None:
+        card_number_str = str(card_number)
+
+        card_patterns = {
+            "VISA": r"^4[0-9]{12}(?:[0-9]{3})?$",
+            "MASTERCARD": r"^5[1-5][0-9]{14}$"
+        }
+
+        for card_type, pattern in card_patterns.items():
+            if re.match(pattern, card_number_str):
+                return card_type

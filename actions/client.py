@@ -115,7 +115,7 @@ class Accounts:
             "balance": balance,
             "timestamp": int(time())
         }
-        await RedisStorage().set(key, json.dumps(id_buff_var), ex=3600)
+        await RedisStorage().set(key, json.dumps(id_buff_var), ex=1800)
 
         return None
 
@@ -169,6 +169,7 @@ class AccountImage:
     @property
     def card(self) -> Image:
         card = ImageProcess(f"{self.account.type}-card.png")
+
         card.add_text(  # card holder
             text=self.client_name,
             pos=(42, 298),
@@ -180,6 +181,7 @@ class AccountImage:
             font=self.fonts["medium"],
             size=26, align="left"
         ) if self.account.type in ["black", "white", "platinum", "iron", "yellow"] else None
+
         card.add_text(  # currency
             text=self.account.currencyCode,
             pos=(482, 40),
@@ -187,6 +189,20 @@ class AccountImage:
             font=self.fonts["regular"],
             size=24, align="left"
         ) if self.account.type == "black" else None
+
+        # build and paste card system logo on client card
+        card_number = int(self.account.maskedPan[0].replace("*", "0"))
+        card_system_name = Other.identify_credit_card(card_number)
+
+        card_system = ImageProcess("%s-logo%s.png" % (
+            card_system_name.lower(),
+            "-%s" %
+            ("white" if self.account.type in ("black", "platinum", "iron", "rebuilding", "atb",)
+             else "black") if card_system_name == "VISA" else ""
+        ))
+
+        card_sys = card_system.image
+        card.image.paste(card_sys, (440, 270), card_sys)
 
         card.perspective(-.3)
         card.image = card.image.rotate(10, resample=Image.BICUBIC, expand=True)
@@ -198,7 +214,7 @@ class AccountImage:
         if self.account.type in ("black", "platinum", "iron", "fop",):
             return "%s_background.png" % self.account.currencyCode
 
-        return "UAH_background.png"
+        return f"{self.account.type}_card_background.png"
 
     async def build_image(self) -> bytes:
         background = ImageProcess(self.background)
@@ -263,7 +279,7 @@ class AccountImage:
 
         # decoration
         cat = ImageProcess("sitting_cat.png").image
-        background.image.paste(cat, (840, 420), cat)
+        background.image.paste(cat, (950, 420), cat)
 
         return bytes(background)
 
