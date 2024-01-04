@@ -152,7 +152,6 @@ class AccountImage:
         self.account = account
         self.client_name = client_name
 
-        self.background = "background.png"
         self.fonts = {
             "regular": "Montserrat-Regular.ttf",
             "medium": "Montserrat-Medium.ttf",
@@ -193,6 +192,13 @@ class AccountImage:
         card.image = card.image.rotate(10, resample=Image.BICUBIC, expand=True)
 
         return card
+
+    @property
+    def background(self) -> str:
+        if self.account.type in ("black", "platinum", "iron", "fop",):
+            return "%s_background.png" % self.account.currencyCode
+
+        return "UAH_background.png"
 
     async def build_image(self) -> bytes:
         background = ImageProcess(self.background)
