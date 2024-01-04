@@ -9,7 +9,7 @@ from misc.lang import Lang
 
 
 @dp.errors_handler()
-async def errors_handler(update, exception):
+async def errors_handler(update, exception) -> bool:
     """
     Exceptions handler. Catches all exceptions within task factory tasks.
     :param update:
@@ -17,15 +17,16 @@ async def errors_handler(update, exception):
     :return: stdout logging
     """
 
-    try:
-        update = update.callback_query
-    except AttributeError:
-        pass
+    if update:
+        try:
+            update = update.callback_query
+        except AttributeError:
+            pass
 
-    await bot.send_message(
-        update.message.chat.id,
-        await Lang.get("exception", update.message) % exception.__class__.__name__
-    )
+        await bot.send_message(
+            update.message.chat.id,
+            await Lang.get("exception", update.message) % exception.__class__.__name__
+        )
 
     if isinstance(exception, CantDemoteChatCreator):
         logging.debug("Can't demote chat creator")
