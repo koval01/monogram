@@ -30,7 +30,7 @@ class Account(BaseModel):
     balance: SeperateFloat
     creditLimit: SeperateFloat
     maskedPan: List[str]
-    type: Literal["black", "white", "platinum", "iron", "fop", "yellow", "eAid", "rebuilding"]
+    type: Literal["black", "white", "platinum", "iron", "fop", "yellow", "eAid", "rebuilding", "atb"]
     iban: str
 
 
