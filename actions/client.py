@@ -1,8 +1,6 @@
 import re
 import json
 
-from time import time
-
 from textwrap import wrap
 
 from aiogram import types
@@ -112,8 +110,7 @@ class Accounts:
         photo_list = sorted(photo_list, key=lambda k: -k.file_size)
         id_buff_var = {
             "file_id": photo_list[0].file_id,
-            "balance": balance,
-            "timestamp": int(time())
+            "balance": balance
         }
         await RedisStorage().set(key, json.dumps(id_buff_var), ex=1800)
 
