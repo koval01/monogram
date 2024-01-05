@@ -22,12 +22,14 @@ class ImageProcess:
     def perspective(self, mv: float) -> None:
         width, height = self.image.size
 
-        xshift = abs(mv) * width
-        new_width = width + int(round(xshift))
+        xshift = mv * width
+        new_width = width + int(round(abs(xshift)))
+
+        transform_matrix = (1, mv, -xshift if mv > 0 else 0, 0, 1, 0)
 
         self.image = self.image.transform(
             (new_width, height),
-            Image.AFFINE, (1, mv, -xshift if mv > 0 else 0, 0, 1, 0), Image.BICUBIC
+            Image.AFFINE, transform_matrix, Image.BICUBIC
         )
 
     def add_text(
