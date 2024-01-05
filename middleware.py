@@ -60,6 +60,7 @@ class ThrottlingMiddleware(BaseMiddleware):
 
 
 class AnalyticsMiddleware(BaseMiddleware):
+
     def __init__(self):
         super(AnalyticsMiddleware, self).__init__()
 
