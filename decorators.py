@@ -24,7 +24,7 @@ def async_timer(func):
         result = await process(func, *args, **params)
 
         f_time = int(round(time() - start, 3) * 1000)
-        log.info(f"Function {f_name} took {f_time} ms")
+        log.debug(f"Function {f_name} took {f_time} ms")
         return result
 
     return helper
