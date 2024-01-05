@@ -10,7 +10,7 @@ from middleware import ThrottlingMiddleware, AnalyticsMiddleware
 import config
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format="%(created)f:%(levelname)s:%(name)s:%(module)s:%(message)s", level=logging.INFO)
 
 # error tracker
 # if SENTRY_DSN is not specified, this module will be skipped
