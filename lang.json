@@ -337,6 +337,19 @@
             "nl": "Kredietlimiet",
             "it": "Limite di credito",
             "ro": "Limita de credit"
+        },
+        "lang_name": {
+            "uk": "українська",
+            "en": "english",
+            "ru": "русский",
+            "be": "беларуская",
+            "pl": "polski",
+            "de": "deutsch",
+            "cs": "čeština",
+            "sk": "slovenský",
+            "nl": "nederlandse",
+            "it": "italiano",
+            "ro": "română"
         }
     },
     "valid_lang_keys": [
