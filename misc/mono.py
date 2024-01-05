@@ -8,6 +8,8 @@ from misc import models
 
 from misc.other import Other
 
+from decorators import async_timer
+
 
 class MonoAPI:
     """Written specifically for Sominemo implementation"""
@@ -16,6 +18,7 @@ class MonoAPI:
         self.host: str = "api.mono.sominemo.com"
         self.origin: str = "monoweb.app"
     
+    @async_timer
     async def request(self, api_method: str, method: str = "GET", data: dict = None, token: str = "") -> \
             ClientResponse.text or ClientResponse.json or None:
         

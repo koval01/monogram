@@ -3,6 +3,8 @@ import logging
 
 from aiogram import types
 
+from decorators import async_timer
+
 from misc.redis_storage import RedisStorage
 
 
@@ -95,6 +97,7 @@ class Lang:
         return cls.default_lang
 
     @classmethod
+    @async_timer
     async def get(cls, key: str, message: types.Message or types.CallbackQuery, code: str = None) -> str:
         try:
             return cls.dictionary["keys"][key][await cls._get(message, code)]

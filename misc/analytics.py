@@ -1,6 +1,8 @@
 from aiogram import types
 from aiohttp import ClientSession
 
+from decorators import async_timer
+
 from config import GA_ID, GA_SECRET
 
 import logging as log
@@ -18,6 +20,7 @@ class Analytics:
         self.host = "www.google-analytics.com"
         self.path = "mp/collect"
 
+    @async_timer
     async def _request_to_ga_server(self, params: dict, json: dict) -> None:
         async with ClientSession() as session:
             try:

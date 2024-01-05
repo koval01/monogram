@@ -15,6 +15,8 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from dispatcher import bot
 
+from decorators import async_timer
+
 
 class QRImage:
 
@@ -58,6 +60,7 @@ class RollIn:
         
         return keyboard
 
+    @async_timer
     async def check_auth(self) -> ClientInfoModel | None:
         future = RollIn.future_list.get(self.message.chat.id)
         if future:
@@ -71,7 +74,8 @@ class RollIn:
         client = await Mono().client_info(self.message, token)
         return client
 
-    async def process_old(self, new_msg: types.Message) -> None:
+    @async_timer
+    async def process_old_message(self, new_msg: types.Message) -> None:
         key = f"start_qr_last_{self.message.chat.id}"
         old_msg_id = await RedisStorage().get(key)
 
@@ -104,6 +108,7 @@ class RollIn:
 
         return keyboard
 
+    @async_timer
     async def process(self) -> types.Message:
         auth_client = await self.check_auth()
         if auth_client:
@@ -130,7 +135,7 @@ class RollIn:
 
         RollIn.future_list[self.message.chat.id] = asyncio.ensure_future(self.token_check_loop(msg))
 
-        await self.process_old(msg)
+        await self.process_old_message(msg)
         return msg
 
 
@@ -139,6 +144,7 @@ class LogOut:
     def __init__(self, message: types.Message) -> None:
         self.message = message
 
+    @async_timer
     async def process(self) -> types.Message:
         storage_flush = await RedisStorage().forget(f"mono_auth_{self.message.chat.id}")
 
@@ -154,11 +160,13 @@ class CheckToken:
         self.message = message
         self.lang = message.from_user.language_code
 
-    async def start_token(self) -> str | None:
+    @async_timer
+    async def get_start_token(self) -> str | None:
         return await RedisStorage().get(f"mono_start_{self.message.chat.id}")
 
+    @async_timer
     async def process(self) -> bool:
-        start_token = await self.start_token()
+        start_token = await self.get_start_token()
         token = await Mono().check_token(start_token)
 
         if not token:

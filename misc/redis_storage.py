@@ -1,4 +1,7 @@
 from redis import asyncio as aioredis
+
+from decorators import async_timer
+
 import config
 
 
@@ -15,12 +18,15 @@ class RedisStorage:
     async def shutdown() -> None:
         await RedisStorage.cursor.close()
         
+    @async_timer
     async def get(self, key: str) -> str | None:
         data = await self.cursor.get(key)
         return data.decode("utf-8") if data else None
     
+    @async_timer
     async def set(self, key: str, value: str, ex: int = None) -> bool:
         return await self.cursor.set(key, value, ex=ex)
 
+    @async_timer
     async def forget(self, key: str) -> bool:
         return await self.cursor.delete(key)

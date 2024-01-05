@@ -19,6 +19,8 @@ from misc.redis_storage import RedisStorage
 from misc.lang import Lang
 from misc.other import Other
 
+from decorators import async_timer
+
 
 class Accounts:
 
@@ -31,6 +33,7 @@ class Accounts:
             self.query = message
 
     @property
+    @async_timer
     async def client(self) -> ClientModel:
         redis_key = f"mono_client_{self.message.chat.id}"
         client = await RedisStorage().get(redis_key)
@@ -46,6 +49,7 @@ class Accounts:
     async def token(self) -> str | None:
         return await RedisStorage().get(f"mono_auth_{self.message.chat.id}")
     
+    @async_timer
     async def keyboard_create(
             self, accounts: list[AccountModel], selected_account: AccountModel
     ) -> InlineKeyboardMarkup:
@@ -89,6 +93,7 @@ class Accounts:
                     and account.currencyCode.upper() == data["currency"].upper():
                 return account
 
+    @async_timer
     async def storage(self, account: AccountModel, message: types.Message = None) -> str | None:
         key = f"acc_{account.type}_{account.currencyCode}_{self.message.chat.id}"
         balance = int(account.balance*100)
@@ -116,6 +121,7 @@ class Accounts:
 
         return None
 
+    @async_timer
     async def process(self) -> types.Message:
         accounts, client = await self.get_list()
 
@@ -213,6 +219,7 @@ class AccountImage:
 
         return f"{self.account.type}_card_background.png"
 
+    @async_timer
     async def build_image(self) -> bytes:
         background = ImageProcess(self.background)
         background.add_text(  # total balance
