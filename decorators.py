@@ -26,7 +26,7 @@ def async_timer(func):
         f_time = int(round(time() - start, 3) * 1000)
         log.debug(f"Function {f_name} took {f_time} ms")
 
-        if f_time > 1000:
+        if f_time > 500:
             log.warning(f"Function {f_name} was executed inefficiently. Execution time {f_time} ms")
 
         return result
