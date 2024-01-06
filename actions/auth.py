@@ -20,11 +20,23 @@ from decorators import async_timer
 class QRImage:
 
     def __init__(self, roll: RollModel, background: str = "monocat_auth.png") -> None:
+        """
+        Initializes a QRImage instance.
+
+        Args:
+            roll (RollModel): An instance of RollModel representing the QR code and its associated data.
+            background (str, optional): File path or name of the background image. Defaults to "monocat_auth.png".
+        """
+
         self.roll = roll
         self.image_back = ImageProcess(background)
         self.image_qr = ImageProcess(roll.qr)
 
     def _link_preview(self) -> None:
+        """
+        Adds a link preview text to the background image based on the RollModel URL.
+        """
+
         url = self.roll.url.split("//")[1]
         self.image_back.add_text(
             text=url,
@@ -37,6 +49,13 @@ class QRImage:
 
     @property
     def get(self) -> bytes:
+        """
+        Combines the background image, QR code image, and link preview text to generate a final image.
+
+        Returns:
+            bytes: The binary representation of the final image.
+        """
+
         self.image_back.image.paste(
             self.image_qr.image,
             (185, 380)
@@ -49,10 +68,27 @@ class RollIn:
     future_list: dict = {}
     
     def __init__(self, message: types.Message) -> None:
+        """
+        Initializes a RollIn instance with the given Telegram message.
+
+        Args:
+            message (types.Message): The Telegram message triggering the MonoBank integration process.
+        """
+
         self.message = message
     
     @async_timer
     async def keyboard_create(self, roll: RollModel) -> InlineKeyboardMarkup:
+        """
+        Creates and returns an inline keyboard for interacting with the MonoBank integration.
+
+        Args:
+            roll (RollModel): An instance of RollModel representing MonoBank integration details.
+
+        Returns:
+            InlineKeyboardMarkup: The generated inline keyboard.
+        """
+
         keyboard = InlineKeyboardMarkup()
         
         keyboard.add(InlineKeyboardButton(
@@ -62,6 +98,13 @@ class RollIn:
 
     @async_timer
     async def check_auth(self) -> ClientInfoModel | None:
+        """
+        Checks the authentication status and retrieves client information from MonoBank.
+
+        Returns:
+            ClientInfoModel | None: The client information if authenticated, otherwise None.
+        """
+
         future = RollIn.future_list.get(self.message.chat.id)
         if future:
             future.cancel()
@@ -76,6 +119,13 @@ class RollIn:
 
     @async_timer
     async def process_old_message(self, new_msg: types.Message) -> None:
+        """
+        Processes the old message by deleting it if it exists, updating the message ID in Redis storage.
+
+        Args:
+            new_msg (types.Message): The new message to be processed.
+        """
+
         key = f"start_qr_last_{self.message.chat.id}"
         old_msg_id = await RedisStorage().get(key)
 
@@ -89,6 +139,13 @@ class RollIn:
 
     @staticmethod
     async def token_check_loop(message: types.Message) -> None:
+        """
+        Performs a looped token check and handles token expiration by sending a prompt to the user.
+
+        Args:
+            message (types.Message): The message associated with the MonoBank integration.
+        """
+
         for _ in range(15):
             result = await CheckToken(message).process()
             if result:
@@ -106,13 +163,38 @@ class RollIn:
 
     @staticmethod
     async def session_buttons(message: types.Message) -> InlineKeyboardMarkup:
+        """
+        Generates an inline keyboard with session-related options.
+
+        Args:
+            message (types.Message): The message associated with the MonoBank integration.
+
+        Returns:
+            InlineKeyboardMarkup: The generated inline keyboard.
+        """
+
         keyboard = InlineKeyboardMarkup()
-        keyboard.add(InlineKeyboardButton(await Lang.get("accounts_button", message), callback_data="accounts_button"))
-        keyboard.add(InlineKeyboardButton(await Lang.get("logout_button", message), callback_data="logout_session"))
+
+        keyboard.add(InlineKeyboardButton(
+            await Lang.get("accounts_button", message),
+            callback_data="accounts_button")
+        )
+        keyboard.add(InlineKeyboardButton(
+            await Lang.get("logout_button", message),
+            callback_data="logout_session")
+        )
 
         return keyboard
 
     async def process(self) -> types.Message:
+        """
+        Initiates the MonoBank integration process, handling authentication checks,
+        QR code generation, and message replies.
+
+        Returns:
+            types.Message: The message representing the result of the integration process.
+        """
+
         auth_client = await self.check_auth()
         if auth_client:
             return await self.message.reply(
@@ -121,7 +203,6 @@ class RollIn:
             )
 
         roll = await Mono().roll_in()
-
         if not roll:
             return await self.message.reply(await Lang.get("roll_error", self.message))
 
@@ -145,13 +226,26 @@ class RollIn:
 class LogOut:
 
     def __init__(self, message: types.Message) -> None:
+        """
+        Initializes a LogOut instance with the given Telegram message.
+
+        Args:
+            message (types.Message): The Telegram message triggering the logout process.
+        """
+
         self.message = message
 
     async def process(self) -> types.Message:
+        """
+        Initiates the logout process by clearing the stored authentication token and sending a logout message.
+
+        Returns:
+            types.Message: The message representing the result of the logout process.
+        """
+
         await bot.send_chat_action(self.message.chat.id, types.ChatActions.TYPING)
 
         storage_flush = await RedisStorage().forget(f"mono_auth_{self.message.chat.id}")
-
         if not storage_flush:
             return await self.message.reply(await Lang.get("unknown_error", self.message))
 
@@ -161,14 +255,85 @@ class LogOut:
 class CheckToken:
 
     def __init__(self, message: types.Message) -> None:
+        """
+        Initializes a CheckToken instance with the given Telegram message.
+
+        Args:
+            message (types.Message): The Telegram message triggering the token checking process.
+        """
+
         self.message = message
         self.lang = message.from_user.language_code
 
     @async_timer
     async def get_start_token(self) -> str | None:
+        """
+        Retrieves the starting token for the MonoBank integration process.
+
+        Returns:
+            str | None: The starting token if available, otherwise None.
+        """
+
         return await RedisStorage().get(f"mono_start_{self.message.chat.id}")
 
+    @staticmethod
+    @async_timer
+    async def _redis_action(message: types.Message, token: str) -> bool:
+        """
+        Performs a Redis storage action by setting the MonoBank integration token.
+
+        Args:
+            message (types.Message): The Telegram message associated with the action.
+            token (str): The MonoBank integration token to be stored.
+
+        Returns:
+            bool: True if the token is successfully stored, False otherwise.
+        """
+
+        status = await RedisStorage().set(f"mono_auth_{message.chat.id}", token)
+
+        if status:
+            return True
+
+        await bot.send_message(
+            chat_id=message.chat.id,
+            text=await Lang.get("update_mono_token_error", message)
+        )
+
+        return False
+
+    @staticmethod
+    @async_timer
+    async def _msg_action(message: types.Message, client_fullname: str) -> None:
+        """
+        Performs a Telegram message action by deleting a specified message and sending a new message.
+
+        Args:
+            message (types.Message): The Telegram message associated with the action.
+            client_fullname (str): The full name of the MonoBank client for the new message.
+        """
+
+        client_name = client_fullname.split()[-1]
+
+        await bot.delete_message(
+            chat_id=message.chat.id,
+            message_id=message.message_id
+        )
+
+        await bot.send_message(
+            chat_id=message.chat.id,
+            text=await Lang.get("mono_token_active", message) % client_name,
+            reply_markup=await RollIn.session_buttons(message)
+        )
+
     async def process(self) -> bool:
+        """
+        Initiates the token checking and refreshing process, updating the authentication token if necessary.
+
+        Returns:
+            bool: True if the token is successfully checked and refreshed, False otherwise.
+        """
+
         await bot.send_chat_action(self.message.chat.id, types.ChatActions.TYPING)
 
         start_token = await self.get_start_token()
@@ -178,25 +343,9 @@ class CheckToken:
             return False
 
         client = await Mono().client_info(self.message, token)
-
         message = self.message
 
-        if not await RedisStorage().set(f"mono_auth_{message.chat.id}", token):
-            await bot.send_message(
-                chat_id=message.chat.id,
-                text=await Lang.get("update_mono_token_error", message)
-            )
-            return False
-
-        await bot.delete_message(
-            chat_id=message.chat.id,
-            message_id=message.message_id
-        )
-
-        await bot.send_message(
-            chat_id=message.chat.id,
-            text=await Lang.get("mono_token_active", message) % client.name.split()[-1],
-            reply_markup=await RollIn.session_buttons(message)
-        )
+        await self._redis_action(message, token)
+        await self._msg_action(message, client.name)
 
         return True

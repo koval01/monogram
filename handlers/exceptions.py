@@ -11,10 +11,14 @@ from misc.lang import Lang
 @dp.errors_handler()
 async def errors_handler(update, exception) -> bool:
     """
-    Exceptions handler. Catches all exceptions within task factory tasks.
-    :param update:
-    :param exception:
-    :return: stdout logging
+    Exception handler for Aiogram errors.
+
+    Args:
+        update: The incoming update or callback_query triggering the error.
+        exception: The exception that occurred.
+
+    Returns:
+        bool: True if the error is handled, False otherwise.
     """
 
     if update:
@@ -23,11 +27,13 @@ async def errors_handler(update, exception) -> bool:
         except AttributeError:
             pass
 
+        # Notify the user about the exception
         await bot.send_message(
             update.message.chat.id,
             await Lang.get("exception", update.message) % exception.__class__.__name__
         )
 
+    # Handle specific exceptions
     if isinstance(exception, CantDemoteChatCreator):
         logging.debug("Can't demote chat creator")
         return True
@@ -65,4 +71,5 @@ async def errors_handler(update, exception) -> bool:
         logging.exception(f'CantParseEntities: {exception} \nUpdate: {update}')
         return True
 
+    # Log other exceptions for debugging purposes
     logging.exception(f'Update: {update} \n{exception}')

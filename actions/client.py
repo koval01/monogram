@@ -27,6 +27,13 @@ from decorators import async_timer
 class Accounts:
 
     def __init__(self, message: types.Message | types.CallbackQuery) -> None:
+        """
+        Initializes an Accounts instance with the given Telegram message or callback query.
+
+        Args:
+            message (types.Message | types.CallbackQuery): The incoming Telegram message or callback query.
+        """
+
         self.message = message
         self.query = None
         
@@ -37,6 +44,13 @@ class Accounts:
     @property
     @async_timer
     async def client(self) -> ClientModel:
+        """
+        Property method to retrieve the client information asynchronously.
+
+        Returns:
+            ClientModel: The client information.
+        """
+
         redis_key = f"mono_client_{self.message.chat.id}"
         client = await RedisStorage().get(redis_key)
         if client:
@@ -49,12 +63,30 @@ class Accounts:
     
     @property
     async def token(self) -> str | None:
+        """
+        Property method to retrieve the Mono authentication token asynchronously.
+
+        Returns:
+            str | None: The Mono authentication token or None if not available.
+        """
+
         return await RedisStorage().get(f"mono_auth_{self.message.chat.id}")
 
     @async_timer
     async def keyboard_create(
             self, accounts: list[AccountModel], selected_account: AccountModel
     ) -> InlineKeyboardMarkup:
+        """
+        Asynchronously creates a keyboard with account information for user interaction.
+
+        Args:
+            accounts (list[AccountModel]): The list of user accounts.
+            selected_account (AccountModel): The currently selected account.
+
+        Returns:
+            InlineKeyboardMarkup: The created keyboard markup.
+        """
+
         keyboard = InlineKeyboardMarkup()
         check_mark = "☑️"
 
@@ -95,10 +127,27 @@ class Accounts:
         return keyboard
 
     async def get_list(self) -> (list[AccountModel], AccountModel):
+        """
+        Asynchronously retrieves the list of user accounts and the selected account.
+
+        Returns:
+            Tuple[list[AccountModel], AccountModel]: The list of user accounts and the selected account.
+        """
+
         client = await self.client
         return client.accounts, client
 
     def _process_query(self, accounts: list[AccountModel]) -> AccountModel | None:
+        """
+        Processes the callback query and returns the corresponding AccountModel.
+
+        Args:
+            accounts (list[AccountModel]): The list of user accounts.
+
+        Returns:
+            AccountModel | None: The corresponding AccountModel or None if not found.
+        """
+
         data = re.search(r"get_account_info_(?P<account_type>.*?)_(?P<currency>[A-Z]*$)", self.query.data).groupdict()
         if not all(k in data.keys() for k in ("account_type", "currency",)):
             return
@@ -114,6 +163,17 @@ class Accounts:
 
     @async_timer
     async def storage(self, account: AccountModel, message: types.Message = None) -> str | None:
+        """
+        Asynchronously manages storage of account-related information.
+
+        Args:
+            account (AccountModel): The account for which information is stored.
+            message (types.Message, optional): The associated Telegram message.
+
+        Returns:
+            str | None: The file_id or None if not available.
+        """
+
         key = f"acc_{account.type}_{account.currencyCode}_{self.message.chat.id}"
         balance = int(account.balance*100)
 
@@ -141,6 +201,13 @@ class Accounts:
         return None
 
     async def process(self) -> types.Message:
+        """
+        Initiates the processing of user accounts, including image generation and interaction handling.
+
+        Returns:
+            types.Message: The result of processing user accounts.
+        """
+
         await bot.send_chat_action(self.message.chat.id, types.ChatActions.TYPING)
 
         accounts, client = await self.get_list()
@@ -174,6 +241,15 @@ class Accounts:
 class AccountImage:
 
     def __init__(self, message: types.Message, account: AccountModel, client_name: str) -> None:
+        """
+        Initializes an AccountImage instance with the given Telegram message, account information, and client name.
+
+        Args:
+            message (types.Message): The Telegram message.
+            account (AccountModel): The user account information.
+            client_name (str): The name of the client.
+        """
+
         self.message = message
         self.account = account
         self.client_name = client_name
@@ -190,11 +266,29 @@ class AccountImage:
         }
 
     def int_display(self, value: int | float, currency: str) -> str:
+        """
+        Formats an integer or float value along with its currency for display.
+
+        Args:
+            value (int | float): The numerical value.
+            currency (str): The currency code.
+
+        Returns:
+            str: The formatted display string.
+        """
+
         return "%s %s" % (Other.format_number(value), self.currency_symbols[currency])
 
     @property
     @async_timer
     async def card(self) -> Image:
+        """
+        Property method to asynchronously create a card image based on user account information.
+
+        Returns:
+            Image: The generated card image.
+        """
+
         card = ImageProcess(f"{self.account.type}-card.png")
 
         card.add_text(  # card holder
@@ -237,8 +331,14 @@ class AccountImage:
         return card
 
     @property
-    @async_timer
     async def background(self) -> str:
+        """
+        Property method to asynchronously determine the background image for the account representation.
+
+        Returns:
+            str: The filename of the background image.
+        """
+
         if self.account.type in ("black", "platinum", "iron", "fop",):
             return "%s_background.png" % self.account.currencyCode
 
@@ -246,6 +346,13 @@ class AccountImage:
 
     @async_timer
     async def build_image(self) -> bytes:
+        """
+        Asynchronously constructs the final image combining the card and background images.
+
+        Returns:
+            bytes: The final image bytes.
+        """
+
         background = ImageProcess(await self.background)
         background.add_text(  # total balance
             text=self.int_display(self.account.balance, self.account.currencyCode),
@@ -314,4 +421,11 @@ class AccountImage:
         return bytes(background)
 
     async def result(self) -> bytes:
+        """
+        Asynchronously retrieves the final image bytes.
+
+        Returns:
+            bytes: The final image bytes.
+        """
+        
         return await self.build_image()

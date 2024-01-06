@@ -10,6 +10,13 @@ from io import BytesIO
 class ImageProcess:
     
     def __init__(self, file: str | bytes) -> None:
+        """
+        Initializes an ImageProcess instance with the given file path or bytes.
+
+        Args:
+            file (str | bytes): The file path or bytes of the image.
+        """
+
         self.path: str = os.path.join(os.getcwd(), "misc")
         
         if isinstance(file, bytes):
@@ -20,6 +27,13 @@ class ImageProcess:
         self.image = Image.open(file).convert('RGBA')
 
     def perspective(self, mv: float) -> None:
+        """
+        Applies a perspective transformation to the image.
+
+        Args:
+            mv (float): The perspective transformation factor.
+        """
+
         width, height = self.image.size
 
         xshift = mv * width
@@ -41,6 +55,18 @@ class ImageProcess:
             size: int = 16,
             align: Literal["left", "center", "right"] = "center"
     ) -> None:
+        """
+        Adds text to the image at the specified position with optional styling.
+
+        Args:
+            text (str): The text to be added.
+            pos (tuple): The position (x, y) where the text will be placed.
+            color (tuple, optional): The RGB color tuple. Defaults to (255, 255, 255).
+            font (str, optional): The font file name. Defaults to "Montserrat-Regular.ttf".
+            size (int, optional): The font size. Defaults to 16.
+            align (Literal["left", "center", "right"], optional): The text alignment. Defaults to "center".
+        """
+
         _, ph = pos
         draw = ImageDraw.Draw(self.image)
         font = ImageFont.truetype(os.path.join(self.path, "fonts", font), size)
@@ -53,6 +79,13 @@ class ImageProcess:
         draw.text(pos, text, color, font=font, align=align)
         
     def __bytes__(self) -> bytes:
+        """
+        Converts the image to bytes.
+
+        Returns:
+            bytes: The image bytes.
+        """
+        
         buffered = BytesIO()
         self.image.save(buffered, format="PNG", quality=95)
         

@@ -11,6 +11,14 @@ import logging as log
 class Analytics:
     
     def __init__(self, message: types.Message, alt_action: str = None) -> None:
+        """
+        Initializes an Analytics instance with the provided message and optional alternative action.
+
+        Args:
+            message (types.Message): The Telegram message triggering the analytics event.
+            alt_action (str): An alternative action for the analytics event, used when provided.
+        """
+
         self.id: str = GA_ID
         self.secret: str = GA_SECRET
 
@@ -22,6 +30,14 @@ class Analytics:
 
     @async_timer
     async def _request_to_ga_server(self, params: dict, json: dict) -> None:
+        """
+        Sends a request to the Google Analytics server with the specified parameters and JSON payload.
+
+        Args:
+            params (dict): The request parameters.
+            json (dict): The JSON payload for the request.
+        """
+
         async with ClientSession() as session:
             try:
                 async with session.post(
@@ -37,8 +53,12 @@ class Analytics:
     @property
     def _payload(self) -> dict:
         """
-        Build body for request to Google Analytics
+        Builds the payload for the Google Analytics request based on the message and alternative action.
+
+        Returns:
+            dict: The payload dictionary.
         """
+
         user_id = self.message.from_user.id
         return {
             'client_id': str(user_id),
@@ -54,6 +74,10 @@ class Analytics:
         }
 
     async def send(self) -> None:
+        """
+        Sends the Google Analytics event using the built payload.
+        """
+
         if not all((self.id, self.secret,)):
             return
         
@@ -62,4 +86,11 @@ class Analytics:
         }, self._payload)
 
     def __str__(self) -> str:
+        """
+        Returns the Google Analytics Measurement ID as a string.
+
+        Returns:
+            str: The Google Analytics Measurement ID.
+        """
+        
         return self.id

@@ -7,8 +7,24 @@ from time import time
 
 def async_timer(func):
     """
-    Async decorator for order execute time function
+    Async decorator for measuring the execution time of a function.
+
+    Args:
+        func (callable): The function to be decorated.
+
+    Returns:
+        callable: The decorated function.
+
+    Usage:
+    @async_timer
+    async def example_function():
+        # Your asynchronous function code here
+
+    The decorator logs the execution time of the decorated function
+    and issues a warning if the execution time exceeds 500 milliseconds.
+
     """
+
     f_name = f"{func.__module__}.{func.__name__}"
 
     async def process(_, *args, **params):
