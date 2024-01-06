@@ -76,12 +76,14 @@ class Accounts:
         
         for account in accounts:
             account_name = account.type.title()
+            display_currency = account.currencyCode if account.type in ("black", "fop", "platinum", "iron",) else ""
+
             if account.type == "yellow":
                 account_name = await Lang.get("yellow", self.message)
 
-            account_name = await Lang.get("card", self.message) % (account_name, account.currencyCode)
+            account_name = await Lang.get("card", self.message) % (account_name, display_currency)
             if account.type == "fop":
-                account_name = "%s %s" % (await Lang.get("fop", self.message), account.currencyCode)
+                account_name = "%s %s" % (await Lang.get("fop", self.message), display_currency)
 
             keyboard.add(
                 InlineKeyboardButton(
