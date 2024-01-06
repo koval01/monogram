@@ -18,7 +18,6 @@ class MonoAPI:
         self.host: str = "api.mono.sominemo.com"
         self.origin: str = "monoweb.app"
     
-    @async_timer
     async def request(self, api_method: str, method: str = "GET", data: dict = None, token: str = "") -> \
             ClientResponse.text or ClientResponse.json or None:
         
@@ -62,22 +61,26 @@ class MonoAPI:
 class Mono:
     
     @staticmethod
+    @async_timer
     async def check_token(token: str) -> str | None:
         data = await MonoAPI().exchange_token(token)
         model = models.exchange_token.Model(**data)
         return model.token if model.token else None
     
     @staticmethod
+    @async_timer
     async def check_proto() -> models.check_proto.Model:
         data = await MonoAPI().check_proto()
         return models.check_proto.Model(**data)
     
     @staticmethod
+    @async_timer
     async def roll_in() -> models.roll_in.Model:
         data = await MonoAPI().roll_in()
         return models.roll_in.Model(**data)
 
     @staticmethod
+    @async_timer
     async def client_info(message: types.Message, token: str) -> models.client_info.Model:
         data = await MonoAPI().client_info(token)
         model = models.client_info.Model(**data)

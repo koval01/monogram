@@ -20,7 +20,6 @@ class Start:
         if not Lang.lang_check(self.message):
             await self.message.answer(await Lang.get("default_language", self.message))
 
-    @async_timer
     async def process(self) -> types.Message:
         await self.check_language()
         await bot.send_chat_action(self.message.chat.id, ChatActions.TYPING)

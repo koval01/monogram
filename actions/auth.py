@@ -51,6 +51,7 @@ class RollIn:
     def __init__(self, message: types.Message) -> None:
         self.message = message
     
+    @async_timer
     async def keyboard_create(self, roll: RollModel) -> InlineKeyboardMarkup:
         keyboard = InlineKeyboardMarkup()
         
@@ -111,7 +112,6 @@ class RollIn:
 
         return keyboard
 
-    @async_timer
     async def process(self) -> types.Message:
         auth_client = await self.check_auth()
         if auth_client:
@@ -147,7 +147,6 @@ class LogOut:
     def __init__(self, message: types.Message) -> None:
         self.message = message
 
-    @async_timer
     async def process(self) -> types.Message:
         await bot.send_chat_action(self.message.chat.id, types.ChatActions.TYPING)
 
@@ -169,7 +168,6 @@ class CheckToken:
     async def get_start_token(self) -> str | None:
         return await RedisStorage().get(f"mono_start_{self.message.chat.id}")
 
-    @async_timer
     async def process(self) -> bool:
         await bot.send_chat_action(self.message.chat.id, types.ChatActions.TYPING)
 

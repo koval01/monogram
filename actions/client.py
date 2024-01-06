@@ -138,7 +138,6 @@ class Accounts:
 
         return None
 
-    @async_timer
     async def process(self) -> types.Message:
         await bot.send_chat_action(self.message.chat.id, types.ChatActions.TYPING)
 
@@ -192,7 +191,8 @@ class AccountImage:
         return "%s %s" % (Other.format_number(value), self.currency_symbols[currency])
 
     @property
-    def card(self) -> Image:
+    @async_timer
+    async def card(self) -> Image:
         card = ImageProcess(f"{self.account.type}-card.png")
 
         card.add_text(  # card holder
@@ -235,7 +235,8 @@ class AccountImage:
         return card
 
     @property
-    def background(self) -> str:
+    @async_timer
+    async def background(self) -> str:
         if self.account.type in ("black", "platinum", "iron", "fop",):
             return "%s_background.png" % self.account.currencyCode
 
@@ -243,7 +244,7 @@ class AccountImage:
 
     @async_timer
     async def build_image(self) -> bytes:
-        background = ImageProcess(self.background)
+        background = ImageProcess(await self.background)
         background.add_text(  # total balance
             text=self.int_display(self.account.balance, self.account.currencyCode),
             pos=(0, 45),
@@ -300,7 +301,7 @@ class AccountImage:
             )
 
         # paste client card
-        card = self.card.image
+        card = await self.card.image
         background.image.paste(card, (300, 240), card)
 
         # decoration
