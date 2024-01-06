@@ -301,7 +301,8 @@ class AccountImage:
             )
 
         # paste client card
-        card = await self.card.image
+        card = await self.card
+        card = card.image
         background.image.paste(card, (300, 240), card)
 
         # decoration
