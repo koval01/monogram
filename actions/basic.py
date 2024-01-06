@@ -1,5 +1,6 @@
 import sys
 import json
+from time import time
 
 import pydantic
 import redis
@@ -33,14 +34,19 @@ class Sys:
     @property
     def sys_info(self) -> str:
         return json.dumps({
-            "interpreter": sys.version,
-            "aiogram": aiogram.__version__,
-            "aiohttp": aiohttp.__version__,
-            "redis": redis.__version__,
-            "Pillow": PIL.__version__,
-            "uvloop": uvloop.__version__,
-            "ujson": ujson.__version__,
-            "pydantic": pydantic.__version__
+            "instance": {
+                "time": int(time()),
+                "interpreter": sys.version
+            },
+            "packages": {
+                "aiogram": aiogram.__version__,
+                "aiohttp": aiohttp.__version__,
+                "redis": redis.__version__,
+                "Pillow": PIL.__version__,
+                "uvloop": uvloop.__version__,
+                "ujson": ujson.__version__,
+                "pydantic": pydantic.__version__
+            }
         })
 
     async def process(self) -> types.Message:
