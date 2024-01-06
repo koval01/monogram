@@ -3,7 +3,7 @@ from dispatcher import dp
 
 from actions.start import Start
 from actions.auth import LogOut
-from actions.basic import CheckProto
+from actions.basic import CheckProto, Sys
 from actions.client import Accounts
 
 from misc.lang import Lang
@@ -32,6 +32,11 @@ async def cmd_accounts(message: types.Message) -> types.Message:
 @dp.message_handler(is_owner=True, commands="check-proto")
 async def cmd_check_proto(message: types.Message) -> types.Message:
     return await CheckProto(message).process()
+
+
+@dp.message_handler(is_owner=True, commands="sys")
+async def cmd_sys(message: types.Message) -> types.Message:
+    return await Sys(message).process()
 
 
 @dp.message_handler(is_owner=True, commands="ping")
