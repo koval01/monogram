@@ -50,15 +50,30 @@ class Accounts:
     @property
     async def token(self) -> str | None:
         return await RedisStorage().get(f"mono_auth_{self.message.chat.id}")
-    
+
     @async_timer
     async def keyboard_create(
             self, accounts: list[AccountModel], selected_account: AccountModel
     ) -> InlineKeyboardMarkup:
         keyboard = InlineKeyboardMarkup()
         check_mark = "☑️"
+
+        accounts = sorted(
+            accounts,
+            key=lambda k: (
+                # sort main types
+                ("iron", "platinum", "black").index(k.type)
+                if k.type in ["iron", "platinum", "black"]
+                else float('inf'),
+                # sort by currency code
+                ("UAH", "USD", "EUR").index(k.currencyCode),
+                # sort other known types
+                ("white", "eAid", "rebuilding").index(k.type)
+                if k.type in ["white", "eAid", "rebuilding"]
+                else float('inf')
+            )
+        )
         
-        accounts = sorted(accounts, key=lambda k: (k.type, k.currencyCode))
         for account in accounts:
             account_name = account.type.title()
             if account.type == "yellow":
