@@ -149,6 +149,8 @@ class LogOut:
 
     @async_timer
     async def process(self) -> types.Message:
+        await bot.send_chat_action(self.message.chat.id, types.ChatActions.TYPING)
+
         storage_flush = await RedisStorage().forget(f"mono_auth_{self.message.chat.id}")
 
         if not storage_flush:
@@ -169,6 +171,8 @@ class CheckToken:
 
     @async_timer
     async def process(self) -> bool:
+        await bot.send_chat_action(self.message.chat.id, types.ChatActions.TYPING)
+
         start_token = await self.get_start_token()
         token = await Mono().check_token(start_token)
 

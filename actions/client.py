@@ -6,6 +6,8 @@ from textwrap import wrap
 from aiogram import types, exceptions
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+from dispatcher import bot
+
 from PIL import Image
 
 from misc.mono import Mono
@@ -123,6 +125,8 @@ class Accounts:
 
     @async_timer
     async def process(self) -> types.Message:
+        await bot.send_chat_action(self.message.chat.id, types.ChatActions.TYPING)
+
         accounts, client = await self.get_list()
 
         if self.query:
