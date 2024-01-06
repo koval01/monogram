@@ -9,8 +9,7 @@ from misc.models.client_info import Model as ClientInfoModel
 
 from misc.image import ImageProcess
 
-from aiogram import types
-from aiogram.utils import exceptions
+from aiogram import types, exceptions
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from dispatcher import bot
@@ -97,8 +96,12 @@ class RollIn:
         button = InlineKeyboardMarkup().add(InlineKeyboardButton(
             await Lang.get("try_again", message), callback_data="new_token"))
 
-        await message.reply(await Lang.get("token_expired", message), reply_markup=button)
-        await message.delete()
+        await message.answer(await Lang.get("token_expired", message), reply_markup=button)
+
+        try:
+            await message.delete()
+        except exceptions.MessageToDeleteNotFound:
+            pass
 
     @staticmethod
     async def session_buttons(message: types.Message) -> InlineKeyboardMarkup:

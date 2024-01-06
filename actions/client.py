@@ -3,7 +3,7 @@ import json
 
 from textwrap import wrap
 
-from aiogram import types
+from aiogram import types, exceptions
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from PIL import Image
@@ -138,7 +138,10 @@ class Accounts:
             image = file_id
 
         if self.query:
-            await self.message.delete()
+            try:
+                await self.message.delete()
+            except exceptions.MessageToDeleteNotFound:
+                pass
 
         answ_photo = await self.message.answer_photo(
             image, reply_markup=markup
